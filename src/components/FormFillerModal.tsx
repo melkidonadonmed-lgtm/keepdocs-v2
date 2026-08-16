@@ -223,8 +223,8 @@ export const FormFillerModal: React.FC<FormFillerModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#002b36]/80 p-2 backdrop-blur-sm sm:p-6">
-      <div className="relative flex h-full max-h-[94vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-[rgba(147,161,161,0.12)] bg-[#073642] shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#060e12]/85 p-2 backdrop-blur-xs sm:p-6">
+      <div className="relative flex h-full max-h-[94vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-[rgba(147,161,161,0.18)] bg-[#0e1b22] shadow-2xl">
         {/* Standardized Responsive Editor Header */}
         <EditorHeader
           icon={<ClipboardList className="h-5 w-5 text-[#268bd2]" />}
@@ -360,7 +360,7 @@ export const FormFillerModal: React.FC<FormFillerModalProps> = ({
                   value={aiTopicPrompt}
                   onChange={(e) => setAiTopicPrompt(e.target.value)}
                   placeholder="Ex: 'Contrato de R$ 12.000 para consultoria em tecnologia...'"
-                  className="w-full rounded-[10px] border border-[rgba(147,161,161,0.15)] bg-[#073642] px-3 py-1.5 text-xs text-[#eee8d5] outline-none focus:border-[#2aa198]"
+                  className="w-full rounded-[10px] border border-[rgba(147,161,161,0.15)] bg-[#091419] px-3 py-1.5 text-xs text-[#eee8d5] outline-none focus:border-[#2aa198]"
                 />
                 <GhostButton
                   variant="accent"
@@ -385,7 +385,7 @@ export const FormFillerModal: React.FC<FormFillerModalProps> = ({
               {selectedTemplate.fields.map((field) => (
                 <div
                   key={field.id}
-                  className="relative rounded-xl border border-[rgba(147,161,161,0.12)] bg-[#002b36]/60 p-3 space-y-1"
+                  className="relative rounded-xl border border-[rgba(147,161,161,0.15)] bg-[#131e25] p-3 space-y-1"
                 >
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-semibold text-[#eee8d5]">
@@ -409,13 +409,13 @@ export const FormFillerModal: React.FC<FormFillerModalProps> = ({
                       value={formValues[field.id] || ""}
                       onChange={(e) => handleInputChange(field.id, e.target.value)}
                       placeholder={field.placeholder}
-                      className="w-full rounded-[8px] border border-[rgba(147,161,161,0.15)] bg-[#073642] p-2 text-xs text-[#eee8d5] outline-none focus:border-[#2aa198]"
+                      className="w-full rounded-[8px] border border-[rgba(147,161,161,0.15)] bg-[#091419] p-2 text-xs text-[#eee8d5] outline-none focus:border-[#2aa198]"
                     />
                   ) : field.type === "select" ? (
                     <select
                       value={formValues[field.id] || ""}
                       onChange={(e) => handleInputChange(field.id, e.target.value)}
-                      className="w-full rounded-[8px] border border-[rgba(147,161,161,0.15)] bg-[#073642] px-3 py-1.5 text-xs text-[#eee8d5] outline-none focus:border-[#2aa198]"
+                      className="w-full rounded-[8px] border border-[rgba(147,161,161,0.15)] bg-[#091419] px-3 py-1.5 text-xs text-[#eee8d5] outline-none focus:border-[#2aa198]"
                     >
                       <option value="">Selecione uma opção...</option>
                       {field.options?.map((opt) => (
@@ -430,7 +430,7 @@ export const FormFillerModal: React.FC<FormFillerModalProps> = ({
                       value={formValues[field.id] || ""}
                       onChange={(e) => handleInputChange(field.id, e.target.value)}
                       placeholder={field.placeholder}
-                      className="w-full rounded-[8px] border border-[rgba(147,161,161,0.15)] bg-[#073642] px-3 py-1.5 text-xs text-[#eee8d5] outline-none focus:border-[#2aa198]"
+                      className="w-full rounded-[8px] border border-[rgba(147,161,161,0.15)] bg-[#091419] px-3 py-1.5 text-xs text-[#eee8d5] outline-none focus:border-[#2aa198]"
                     />
                   )}
                 </div>
@@ -440,7 +440,7 @@ export const FormFillerModal: React.FC<FormFillerModalProps> = ({
 
           {/* Right Panel: Live Document Preview */}
           <div
-            className={`w-full md:w-1/2 flex-col overflow-y-auto bg-[#002b36]/40 p-4 sm:p-6 ${
+            className={`w-full md:w-1/2 flex-col overflow-y-auto bg-[#081216] p-4 sm:p-6 ${
               activeMobileTab === "form" ? "hidden md:flex" : "flex"
             }`}
           >
@@ -452,7 +452,7 @@ export const FormFillerModal: React.FC<FormFillerModalProps> = ({
               <span className="text-[#2aa198] font-semibold text-[11px]">Tempo Real</span>
             </div>
 
-            <div className="mx-auto my-1 w-full max-w-xl flex-1 rounded-xl border border-[rgba(147,161,161,0.12)] bg-[#002b36] p-5 sm:p-7 shadow-lg overflow-y-auto">
+            <div className="mx-auto my-1 w-full max-w-xl flex-1 rounded-xl border border-[rgba(147,161,161,0.18)] bg-[#131e25] p-5 sm:p-7 shadow-xl overflow-y-auto">
               <div
                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(generatedHtml) }}
                 className="prose prose-invert max-w-none text-xs text-[#eee8d5] leading-relaxed overflow-x-auto"

@@ -603,8 +603,8 @@ export const ImageAnnotatorModal: React.FC<ImageAnnotatorModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#002b36]/85 p-1 sm:p-4 backdrop-blur-md">
-      <div className="relative flex h-full max-h-[96vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-[rgba(147,161,161,0.15)] bg-[#073642] shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#060e12]/85 p-1 sm:p-4 backdrop-blur-xs">
+      <div className="relative flex h-full max-h-[96vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-[rgba(147,161,161,0.18)] bg-[#0e1b22] shadow-2xl">
         {/* Responsive Editor Header */}
         <EditorHeader
           icon={<PenTool className="h-5 w-5 text-[#6c71c4]" />}
@@ -644,7 +644,7 @@ export const ImageAnnotatorModal: React.FC<ImageAnnotatorModalProps> = ({
         />
 
         {/* Mobile-First Responsive Toolbar */}
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[rgba(147,161,161,0.12)] bg-[#002b36]/70 px-3 py-2 sm:px-5">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[rgba(147,161,161,0.15)] bg-[#122129] px-3 py-2 sm:px-5">
           {/* Tools Selector */}
           <div className="flex items-center gap-1 overflow-x-auto py-0.5 no-scrollbar">
             <GhostButton

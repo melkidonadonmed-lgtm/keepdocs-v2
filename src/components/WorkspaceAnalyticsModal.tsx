@@ -200,14 +200,14 @@ export const WorkspaceAnalyticsModal: React.FC<WorkspaceAnalyticsModalProps> = (
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-xs animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-xs animate-in fade-in duration-200">
       <div
-        className="relative flex flex-col w-full max-w-4xl max-h-[90vh] rounded-2xl border border-[rgba(147,161,161,0.2)] bg-[#002b36] shadow-2xl overflow-hidden"
+        className="relative flex flex-col w-full max-w-4xl max-h-[90vh] rounded-2xl border border-[rgba(147,161,161,0.18)] bg-[#0e1b22] shadow-2xl overflow-hidden"
         role="dialog"
         aria-modal="true"
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between border-b border-[rgba(147,161,161,0.12)] bg-[#073642] px-5 py-4">
+        <div className="flex items-center justify-between border-b border-[rgba(147,161,161,0.15)] bg-[#122129] px-5 py-4">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#2aa198]/20 text-[#2aa198]">
               <BarChart3 className="h-5 w-5" />
@@ -224,7 +224,7 @@ export const WorkspaceAnalyticsModal: React.FC<WorkspaceAnalyticsModalProps> = (
 
           {/* Tab Selector & Close */}
           <div className="flex items-center gap-2">
-            <div className="flex rounded-lg bg-[#002b36] p-0.5 border border-[rgba(147,161,161,0.12)]">
+            <div className="flex rounded-lg bg-[#081419] p-0.5 border border-[rgba(147,161,161,0.15)]">
               <button
                 onClick={() => setActiveTab("overview")}
                 className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
@@ -250,7 +250,7 @@ export const WorkspaceAnalyticsModal: React.FC<WorkspaceAnalyticsModalProps> = (
 
             <button
               onClick={onClose}
-              className="rounded-lg p-2 text-[#93a1a1] hover:bg-[#002b36] hover:text-[#eee8d5] transition-colors"
+              className="rounded-lg p-2 text-[#93a1a1] hover:bg-[#081419] hover:text-[#eee8d5] transition-colors"
               title="Fechar"
             >
               <X className="h-5 w-5" />

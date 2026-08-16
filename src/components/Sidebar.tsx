@@ -347,8 +347,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const itemClass = (active: boolean) =>
     `flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all ${
       active
-        ? "bg-[#0a4553] text-[#eee8d5] border-l-2 border-[#2aa198]"
-        : "text-[#93a1a1] hover:bg-[#0a4553]/60 hover:text-[#eee8d5] border-l-2 border-transparent"
+        ? "bg-[#14232c] text-[#eee8d5] border-l-2 border-[#2aa198] shadow-sm"
+        : "text-[#93a1a1] hover:bg-[#111e26] hover:text-[#eee8d5] border-l-2 border-transparent"
     }`;
 
   const countBadge = (count: number, active: boolean) => (
@@ -356,7 +356,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       className={`rounded px-1.5 py-0.2 text-[10px] tabular-nums font-medium ${
         active
           ? "bg-[#2aa198]/20 text-[#2aa198]"
-          : "bg-[#002b36] text-[#586e75]"
+          : "bg-[#091419] text-[#657b83]"
       }`}
     >
       {count}
@@ -611,9 +611,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <>
-      {/* Desktop & Tablet Persistent Sidebar (collapsible) - Fundo #01303c rígido */}
+      {/* Desktop & Tablet Persistent Sidebar (collapsible) */}
       <aside
-        className={`hidden flex-shrink-0 border-r border-[rgba(147,161,161,0.12)] bg-[#01303c] p-3.5 transition-[width] duration-200 ease-out md:block ${
+        className={`hidden flex-shrink-0 border-r border-[rgba(147,161,161,0.12)] bg-[#081419] p-3.5 transition-[width] duration-200 ease-out md:block ${
           isCollapsed ? "w-16 overflow-y-auto" : "w-60 overflow-y-auto"
         }`}
       >
@@ -637,15 +637,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
         )}
       </aside>
 
-      {/* Mobile Slide-Over Drawer (<768px) - Sem blur invasivo, ágil e compacto */}
+      {/* Mobile Slide-Over Drawer (<768px) */}
       {isMobileOpen && (
         <div className="fixed inset-0 z-50 flex md:hidden animate-in fade-in duration-150">
           <div
-            className="fixed inset-0 bg-black/50 transition-opacity"
+            className="fixed inset-0 bg-black/60 transition-opacity"
             onClick={onCloseMobile}
             aria-label="Fechar menu"
           />
-          <aside className="relative z-50 w-64 max-w-[75vw] flex-shrink-0 overflow-y-auto border-r border-[rgba(147,161,161,0.15)] bg-[#01303c] p-4 shadow-2xl animate-in slide-in-from-left duration-200">
+          <aside className="relative z-50 w-64 max-w-[75vw] flex-shrink-0 overflow-y-auto border-r border-[rgba(147,161,161,0.18)] bg-[#081419] p-4 shadow-2xl animate-in slide-in-from-left duration-200">
             {sidebarContent}
           </aside>
         </div>

@@ -66,7 +66,7 @@ export const Header: React.FC<HeaderProps> = ({
   const importInputRef = React.useRef<HTMLInputElement>(null);
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(147,161,161,0.12)] bg-[#002b36]/90 px-3 py-2.5 backdrop-blur-md sm:px-6">
+    <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[rgba(147,161,161,0.12)] bg-[#081419]/95 px-3 py-2.5 backdrop-blur-md sm:px-6">
       {/* Mobile Menu Toggle & Brand */}
       <div className="flex items-center gap-2">
         <button
@@ -109,11 +109,11 @@ export const Header: React.FC<HeaderProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Pesquisar notas, planilhas, forms... (Cmd+K)"
-            className="w-full rounded-xl border border-[rgba(147,161,161,0.12)] bg-[#073642] py-1.5 pl-8 pr-12 text-xs text-[#eee8d5] placeholder-[#586e75] outline-none transition-all focus:border-[#2aa198] focus:bg-[#073642]"
+            className="w-full rounded-xl border border-[rgba(147,161,161,0.15)] bg-[#101e26] py-1.5 pl-8 pr-12 text-xs text-[#eee8d5] placeholder-[#586e75] outline-none transition-all focus:border-[#2aa198] focus:bg-[#14232c]"
           />
           <button
             onClick={onOpenCommandPalette}
-            className="absolute right-2 flex items-center gap-0.5 rounded border border-[rgba(147,161,161,0.2)] bg-[#002b36] px-1.5 py-0.5 text-[10px] font-medium text-[#93a1a1] hover:bg-[#0a4553] hover:text-[#eee8d5] transition-colors"
+            className="absolute right-2 flex items-center gap-0.5 rounded border border-[rgba(147,161,161,0.2)] bg-[#081419] px-1.5 py-0.5 text-[10px] font-medium text-[#93a1a1] hover:bg-[#182730] hover:text-[#eee8d5] transition-colors"
             title="Abrir Command Palette (Cmd+K)"
           >
             <Command className="h-2.5 w-2.5" />
@@ -124,7 +124,7 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Mobile Search Overlay / Toggle */}
       {isMobileSearchOpen ? (
-        <div className="absolute inset-x-2 top-2 z-40 flex items-center gap-2 rounded-xl border border-[rgba(147,161,161,0.2)] bg-[#073642] p-1.5 shadow-2xl md:hidden">
+        <div className="absolute inset-x-2 top-2 z-40 flex items-center gap-2 rounded-xl border border-[rgba(147,161,161,0.2)] bg-[#101e26] p-1.5 shadow-2xl md:hidden">
           <Search className="ml-2 h-4 w-4 text-[#586e75]" />
           <input
             autoFocus
@@ -157,12 +157,12 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Action Controls */}
       <div className="flex items-center gap-1.5">
         {/* Layout Mode Switcher (Desktop / Tablet) */}
-        <div className="hidden sm:flex items-center rounded-lg border border-[rgba(147,161,161,0.12)] bg-[#073642] p-0.5 text-[#93a1a1]">
+        <div className="hidden sm:flex items-center rounded-lg border border-[rgba(147,161,161,0.15)] bg-[#101e26] p-0.5 text-[#93a1a1]">
           <button
             onClick={() => setLayoutMode("masonry")}
             className={`rounded-md p-1.5 transition-colors ${
               layoutMode === "masonry"
-                ? "bg-[#0a4553] text-[#eee8d5]"
+                ? "bg-[#182730] text-[#eee8d5]"
                 : "hover:text-[#eee8d5]"
             }`}
             title="Mosaico Keep (Masonry)"
@@ -173,7 +173,7 @@ export const Header: React.FC<HeaderProps> = ({
             onClick={() => setLayoutMode("grid")}
             className={`rounded-md p-1.5 transition-colors ${
               layoutMode === "grid"
-                ? "bg-[#0a4553] text-[#eee8d5]"
+                ? "bg-[#182730] text-[#eee8d5]"
                 : "hover:text-[#eee8d5]"
             }`}
             title="Grade Uniforme"
@@ -184,7 +184,7 @@ export const Header: React.FC<HeaderProps> = ({
             onClick={() => setLayoutMode("list")}
             className={`rounded-md p-1.5 transition-colors ${
               layoutMode === "list"
-                ? "bg-[#0a4553] text-[#eee8d5]"
+                ? "bg-[#182730] text-[#eee8d5]"
                 : "hover:text-[#eee8d5]"
             }`}
             title="Lista Docs"
@@ -281,14 +281,14 @@ export const Header: React.FC<HeaderProps> = ({
                 className="fixed inset-0 z-40"
                 onClick={() => setShowMobileOverflow(false)}
               />
-              <div className="absolute right-0 z-50 mt-2 w-52 rounded-xl border border-[rgba(147,161,161,0.12)] bg-[#073642] p-1.5 shadow-2xl">
+              <div className="absolute right-0 z-50 mt-2 w-52 rounded-xl border border-[rgba(147,161,161,0.18)] bg-[#101e26] p-1.5 shadow-2xl">
                 {onOpenAnalytics && (
                   <button
                     onClick={() => {
                       onOpenAnalytics();
                       setShowMobileOverflow(false);
                     }}
-                    className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#2aa198] hover:bg-[#0a4553]"
+                    className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#2aa198] hover:bg-[#182730]"
                   >
                     <BarChart3 className="h-4 w-4" />
                     <span>Dashboard de Métricas</span>
@@ -299,7 +299,7 @@ export const Header: React.FC<HeaderProps> = ({
                     onOpenAIAssistant();
                     setShowMobileOverflow(false);
                   }}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#eee8d5] hover:bg-[#0a4553]"
+                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#eee8d5] hover:bg-[#182730]"
                 >
                   <Sparkles className="h-4 w-4 text-[#2aa198]" />
                   <span>Gemini AI</span>
@@ -309,7 +309,7 @@ export const Header: React.FC<HeaderProps> = ({
                     onOpenDriveModal();
                     setShowMobileOverflow(false);
                   }}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#eee8d5] hover:bg-[#0a4553]"
+                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#eee8d5] hover:bg-[#182730]"
                 >
                   <Cloud className="h-4 w-4 text-[#2aa198]" />
                   <span>Google Drive</span>
@@ -319,7 +319,7 @@ export const Header: React.FC<HeaderProps> = ({
                     onExportBackup();
                     setShowMobileOverflow(false);
                   }}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#eee8d5] hover:bg-[#0a4553]"
+                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#eee8d5] hover:bg-[#182730]"
                 >
                   <DatabaseBackup className="h-4 w-4 text-[#93a1a1]" />
                   <span>Exportar Backup</span>
@@ -329,7 +329,7 @@ export const Header: React.FC<HeaderProps> = ({
                     importInputRef.current?.click();
                     setShowMobileOverflow(false);
                   }}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#eee8d5] hover:bg-[#0a4553]"
+                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#eee8d5] hover:bg-[#182730]"
                 >
                   <Upload className="h-4 w-4 text-[#93a1a1]" />
                   <span>Restaurar Backup</span>
@@ -344,7 +344,7 @@ export const Header: React.FC<HeaderProps> = ({
                       setLayoutMode("masonry");
                       setShowMobileOverflow(false);
                     }}
-                    className={`rounded-lg p-2 ${layoutMode === "masonry" ? "bg-[#0a4553] text-[#eee8d5]" : "text-[#93a1a1]"}`}
+                    className={`rounded-lg p-2 ${layoutMode === "masonry" ? "bg-[#182730] text-[#eee8d5]" : "text-[#93a1a1]"}`}
                     title="Mosaico"
                   >
                     <LayoutGrid className="h-4 w-4" />
@@ -354,7 +354,7 @@ export const Header: React.FC<HeaderProps> = ({
                       setLayoutMode("grid");
                       setShowMobileOverflow(false);
                     }}
-                    className={`rounded-lg p-2 ${layoutMode === "grid" ? "bg-[#0a4553] text-[#eee8d5]" : "text-[#93a1a1]"}`}
+                    className={`rounded-lg p-2 ${layoutMode === "grid" ? "bg-[#182730] text-[#eee8d5]" : "text-[#93a1a1]"}`}
                     title="Grade"
                   >
                     <Grid3X3 className="h-4 w-4" />
@@ -364,7 +364,7 @@ export const Header: React.FC<HeaderProps> = ({
                       setLayoutMode("list");
                       setShowMobileOverflow(false);
                     }}
-                    className={`rounded-lg p-2 ${layoutMode === "list" ? "bg-[#0a4553] text-[#eee8d5]" : "text-[#93a1a1]"}`}
+                    className={`rounded-lg p-2 ${layoutMode === "list" ? "bg-[#182730] text-[#eee8d5]" : "text-[#93a1a1]"}`}
                     title="Lista"
                   >
                     <List className="h-4 w-4" />
@@ -404,15 +404,15 @@ export const Header: React.FC<HeaderProps> = ({
                 className="fixed inset-0 z-40"
                 onClick={() => setShowNewDropdown(false)}
               />
-              <div className="absolute right-0 z-50 mt-2 w-60 rounded-xl border border-[rgba(147,161,161,0.12)] border-t-[rgba(238,232,213,0.08)] bg-[#073642] p-1.5 shadow-2xl">
+              <div className="absolute right-0 z-50 mt-2 w-60 rounded-xl border border-[rgba(147,161,161,0.18)] bg-[#101e26] p-1.5 shadow-2xl">
                 <button
                   onClick={() => {
                     onNewNote("doc");
                     setShowNewDropdown(false);
                   }}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#eee8d5] hover:bg-[#0a4553] transition-colors"
+                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#eee8d5] hover:bg-[#182730] transition-colors"
                 >
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#002b36] text-[#2aa198]">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#081419] text-[#2aa198]">
                     <FileText className="h-3.5 w-3.5" />
                   </div>
                   <div>
@@ -426,9 +426,9 @@ export const Header: React.FC<HeaderProps> = ({
                     onNewNote("form");
                     setShowNewDropdown(false);
                   }}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#eee8d5] hover:bg-[#0a4553] transition-colors"
+                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#eee8d5] hover:bg-[#182730] transition-colors"
                 >
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#002b36] text-[#2aa198]">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#081419] text-[#2aa198]">
                     <ClipboardList className="h-3.5 w-3.5" />
                   </div>
                   <div>
@@ -442,9 +442,9 @@ export const Header: React.FC<HeaderProps> = ({
                     onNewNote("sheet");
                     setShowNewDropdown(false);
                   }}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#eee8d5] hover:bg-[#0a4553] transition-colors"
+                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#eee8d5] hover:bg-[#182730] transition-colors"
                 >
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#002b36] text-[#2aa198]">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#081419] text-[#2aa198]">
                     <FileSpreadsheet className="h-3.5 w-3.5" />
                   </div>
                   <div>
@@ -458,14 +458,14 @@ export const Header: React.FC<HeaderProps> = ({
                     onNewNote("checklist");
                     setShowNewDropdown(false);
                   }}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#eee8d5] hover:bg-[#0a4553] transition-colors"
+                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#eee8d5] hover:bg-[#182730] transition-colors"
                 >
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#002b36] text-[#2aa198]">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#081419] text-[#2aa198]">
                     <CheckSquare className="h-3.5 w-3.5" />
                   </div>
                   <div>
-                    <div className="font-medium text-[#eee8d5]">Checklist de Tarefas</div>
-                    <div className="text-[10px] text-[#93a1a1]">Lista de tarefas e afazeres</div>
+                    <div className="font-medium text-[#eee8d5]">Lista de Tarefas</div>
+                    <div className="text-[10px] text-[#93a1a1]">Checklist com itens marcáveis</div>
                   </div>
                 </button>
 
@@ -474,14 +474,14 @@ export const Header: React.FC<HeaderProps> = ({
                     onNewNote("canvas");
                     setShowNewDropdown(false);
                   }}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#eee8d5] hover:bg-[#0a4553] transition-colors"
+                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#eee8d5] hover:bg-[#182730] transition-colors"
                 >
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#002b36] text-[#2aa198]">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#081419] text-[#2aa198]">
                     <PenTool className="h-3.5 w-3.5" />
                   </div>
                   <div>
                     <div className="font-medium text-[#eee8d5]">Canvas & Desenho</div>
-                    <div className="text-[10px] text-[#93a1a1]">Desenhe com canetas e camadas</div>
+                    <div className="text-[10px] text-[#93a1a1]">Anotações visuais e camadas</div>
                   </div>
                 </button>
               </div>

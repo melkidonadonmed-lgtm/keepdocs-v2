@@ -156,8 +156,8 @@ export const MiniSheetEditor: React.FC<MiniSheetEditorProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#002b36]/80 p-2 backdrop-blur-sm sm:p-6">
-      <div className="relative flex h-full max-h-[94vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-[rgba(147,161,161,0.12)] bg-[#073642] shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#060e12]/85 p-2 backdrop-blur-xs sm:p-6">
+      <div className="relative flex h-full max-h-[94vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-[rgba(147,161,161,0.18)] bg-[#0e1b22] shadow-2xl">
         {/* Standardized Responsive Editor Header */}
         <EditorHeader
           icon={<FileSpreadsheet className="h-5 w-5 text-[#859900]" />}
@@ -179,10 +179,10 @@ export const MiniSheetEditor: React.FC<MiniSheetEditorProps> = ({
               <GhostButton
                 variant="accent"
                 onClick={handleSave}
-                title="Salvar alterações na nota"
+                title="Salvar planilha como nota"
               >
-                <Check className="h-4 w-4" />
-                <span>Salvar</span>
+                <Check className="h-3.5 w-3.5" />
+                <span>Salvar Planilha</span>
               </GhostButton>
             </>
           }
@@ -196,8 +196,8 @@ export const MiniSheetEditor: React.FC<MiniSheetEditorProps> = ({
           onClose={() => setShowShareModal(false)}
         />
 
-        {/* Formula Toolbar */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-[rgba(147,161,161,0.12)] bg-[#002b36]/60 px-4 py-2 sm:px-6">
+        {/* Formula Bar & Cell Toolbar */}
+        <div className="flex flex-wrap items-center gap-2 border-b border-[rgba(147,161,161,0.15)] bg-[#122129] px-4 py-2 sm:px-6">
           <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-[#859900] bg-[#859900]/15 px-2.5 py-1 rounded-[8px] border border-[#859900]/30 flex-shrink-0">
             <Calculator className="h-3.5 w-3.5" />
             <span>{selectedCellKey}</span>
@@ -211,7 +211,7 @@ export const MiniSheetEditor: React.FC<MiniSheetEditorProps> = ({
               handleCellChange(selectedCellKey, e.target.value);
             }}
             placeholder="Digite valor ou fórmula (ex: =SUM(A1:D1))..."
-            className="flex-1 min-w-[140px] rounded-[10px] border border-[rgba(147,161,161,0.15)] bg-[#002b36] px-3 py-1 text-xs font-mono text-[#eee8d5] outline-none focus:border-[#2aa198]"
+            className="flex-1 min-w-[140px] rounded-[10px] border border-[rgba(147,161,161,0.15)] bg-[#091419] px-3 py-1 text-xs font-mono text-[#eee8d5] outline-none focus:border-[#2aa198]"
           />
 
           <div className="h-4 w-px bg-[rgba(147,161,161,0.2)] mx-1 hidden sm:block" />
@@ -251,7 +251,7 @@ export const MiniSheetEditor: React.FC<MiniSheetEditorProps> = ({
             <GhostButton
               onClick={handleAddRow}
               title="Adicionar linha"
-              className="h-8 px-2.5 rounded-[8px] bg-[#002b36] border border-[rgba(147,161,161,0.12)] text-[11px]"
+              className="h-8 px-2.5 rounded-[8px] bg-[#091419] border border-[rgba(147,161,161,0.15)] text-[11px]"
             >
               <Plus className="h-3 w-3" />
               <span>+ Linha</span>
@@ -259,7 +259,7 @@ export const MiniSheetEditor: React.FC<MiniSheetEditorProps> = ({
             <GhostButton
               onClick={handleAddCol}
               title="Adicionar coluna"
-              className="h-8 px-2.5 rounded-[8px] bg-[#002b36] border border-[rgba(147,161,161,0.12)] text-[11px]"
+              className="h-8 px-2.5 rounded-[8px] bg-[#091419] border border-[rgba(147,161,161,0.15)] text-[11px]"
             >
               <Plus className="h-3 w-3" />
               <span>+ Coluna</span>
@@ -268,11 +268,11 @@ export const MiniSheetEditor: React.FC<MiniSheetEditorProps> = ({
         </div>
 
         {/* Interactive Spreadsheet Grid with NO column truncation */}
-        <div className="flex-1 overflow-auto p-3 sm:p-6 bg-[#002b36]/30">
-          <div className="mx-auto max-w-full rounded-xl border border-[rgba(147,161,161,0.15)] bg-[#002b36] shadow-md overflow-x-auto">
+        <div className="flex-1 overflow-auto p-3 sm:p-6 bg-[#081216]">
+          <div className="mx-auto max-w-full rounded-xl border border-[rgba(147,161,161,0.18)] bg-[#131e25] shadow-xl overflow-x-auto">
             <table className="w-full border-collapse text-xs">
               <thead>
-                <tr className="bg-[#073642] text-[#93a1a1] font-mono">
+                <tr className="bg-[#182730] text-[#93a1a1] font-mono">
                   <th className="w-10 min-w-[40px] border-b border-r border-[rgba(147,161,161,0.15)] px-2 py-1.5 text-center text-[10px]">
                     #
                   </th>

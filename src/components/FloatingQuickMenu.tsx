@@ -40,7 +40,7 @@ export const FloatingQuickMenu: React.FC<FloatingQuickMenuProps> = ({
     <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-2">
       {/* Floating Popover Options Menu */}
       {isOpen && (
-        <div className="w-72 overflow-hidden rounded-2xl border border-[rgba(147,161,161,0.12)] border-t-[rgba(238,232,213,0.08)] bg-[#073642] p-2 shadow-2xl backdrop-blur-md transition-all animate-in fade-in slide-in-from-bottom-3">
+        <div className="w-72 overflow-hidden rounded-2xl border border-[rgba(147,161,161,0.18)] bg-[#101e26] p-2 shadow-2xl backdrop-blur-md transition-all animate-in fade-in slide-in-from-bottom-3">
           <div className="flex items-center justify-between px-3 py-2 text-[10px] font-medium uppercase tracking-wider text-[#586e75]">
             <span>Criar Nova Nota</span>
             <kbd
@@ -48,7 +48,7 @@ export const FloatingQuickMenu: React.FC<FloatingQuickMenuProps> = ({
                 onOpenCommandPalette();
                 setIsOpen(false);
               }}
-              className="flex cursor-pointer items-center gap-0.5 rounded bg-[#002b36] px-1.5 py-0.5 text-[10px] text-[#93a1a1] font-mono hover:text-[#eee8d5]"
+              className="flex cursor-pointer items-center gap-0.5 rounded bg-[#081419] px-1.5 py-0.5 text-[10px] text-[#93a1a1] font-mono hover:text-[#eee8d5]"
             >
               <Command className="h-3 w-3" /> K
             </kbd>
@@ -59,7 +59,7 @@ export const FloatingQuickMenu: React.FC<FloatingQuickMenuProps> = ({
               onCreateDoc();
               setIsOpen(false);
             }}
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-xs text-[#eee8d5] transition-colors hover:bg-[#0a4553]"
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-xs text-[#eee8d5] transition-colors hover:bg-[#182730]"
           >
             <span className="rounded-lg bg-[#b58900]/15 p-1.5 text-[#b58900]">
               <FileText className="h-4 w-4" />
@@ -75,7 +75,7 @@ export const FloatingQuickMenu: React.FC<FloatingQuickMenuProps> = ({
               onCreateTable();
               setIsOpen(false);
             }}
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-xs text-[#eee8d5] transition-colors hover:bg-[#0a4553]"
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-xs text-[#eee8d5] transition-colors hover:bg-[#182730]"
           >
             <span className="rounded-lg bg-[#859900]/15 p-1.5 text-[#859900]">
               <Table className="h-4 w-4" />
@@ -91,23 +91,22 @@ export const FloatingQuickMenu: React.FC<FloatingQuickMenuProps> = ({
               onCreateForm();
               setIsOpen(false);
             }}
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-xs text-[#eee8d5] transition-colors hover:bg-[#0a4553]"
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-xs text-[#eee8d5] transition-colors hover:bg-[#182730]"
           >
             <span className="rounded-lg bg-[#268bd2]/15 p-1.5 text-[#268bd2]">
               <ClipboardList className="h-4 w-4" />
             </span>
             <div className="text-left">
               <div className="font-medium text-[#eee8d5]">Formulário Dinâmico</div>
-              <div className="text-[10px] text-[#93a1a1]">Modelos estruturados com campos</div>
+              <div className="text-[10px] text-[#93a1a1]">Modelo auto-preenchível com IA</div>
             </div>
           </button>
-
           <button
             onClick={() => {
               onOpenCanvas();
               setIsOpen(false);
             }}
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-xs text-[#eee8d5] transition-colors hover:bg-[#0a4553]"
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-xs text-[#eee8d5] transition-colors hover:bg-[#182730]"
           >
             <span className="rounded-lg bg-[#6c71c4]/15 p-1.5 text-[#6c71c4]">
               <ImageIcon className="h-4 w-4" />
@@ -118,7 +117,7 @@ export const FloatingQuickMenu: React.FC<FloatingQuickMenuProps> = ({
             </div>
           </button>
 
-          <label className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2 text-xs text-[#eee8d5] transition-colors hover:bg-[#0a4553]">
+          <label className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2 text-xs text-[#eee8d5] transition-colors hover:bg-[#182730]">
             <span className="rounded-lg bg-[#2aa198]/15 p-1.5 text-[#2aa198]">
               <Upload className="h-4 w-4" />
             </span>

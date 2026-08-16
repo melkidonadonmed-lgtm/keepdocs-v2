@@ -95,6 +95,9 @@ export const DocsEditorModal: React.FC<DocsEditorModalProps> = ({
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
   const skipNextAutoSave = useRef(true);
 
+  // Paper & Canvas Theme (Dark Sand, Warm Sepia, Light Paper)
+  const [paperTheme, setPaperTheme] = useState<"sand-dark" | "linen-sepia" | "sand-light">("sand-dark");
+
   // Embedded Tables in Docs
   const [tables, setTables] = useState<EmbeddedTableData[]>(note.tables || []);
 
@@ -477,8 +480,8 @@ Retorne APENAS o conteúdo em HTML formatado pronto para ser inserido no editor.
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#002b36]/80 p-2 backdrop-blur-sm sm:p-6">
-      <div className="relative flex h-full max-h-[94vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-[rgba(147,161,161,0.12)] bg-[#073642] shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#060e12]/85 p-2 backdrop-blur-xs sm:p-6">
+      <div className="relative flex h-full max-h-[94vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-[rgba(147,161,161,0.18)] bg-[#0e1b22] shadow-2xl">
         {/* Standardized Responsive Editor Header */}
         <EditorHeader
           icon={
@@ -669,164 +672,184 @@ Retorne APENAS o conteúdo em HTML formatado pronto para ser inserido no editor.
         )}
 
         {/* Google Docs Rich Toolbar - Fixed Top Toolbar */}
-        <div className="sticky top-0 z-10 flex flex-wrap items-center gap-1 border-b border-[rgba(147,161,161,0.12)] bg-[#002b36]/90 px-4 py-2 backdrop-blur-md sm:px-6">
-          <button
-            onClick={() => execCmd("formatBlock", "<h1>")}
-            className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#0a4553] hover:text-[#eee8d5]"
-            title="Título 1 (H1 ou '# ')"
-          >
-            <Heading1 className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => execCmd("formatBlock", "<h2>")}
-            className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#0a4553] hover:text-[#eee8d5]"
-            title="Título 2 (H2 ou '## ')"
-          >
-            <Heading2 className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => execCmd("formatBlock", "<h3>")}
-            className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#0a4553] hover:text-[#eee8d5]"
-            title="Título 3 (H3 ou '### ')"
-          >
-            <Heading3 className="h-4 w-4" />
-          </button>
+        <div className="sticky top-0 z-10 flex flex-wrap items-center justify-between gap-1 border-b border-[rgba(147,161,161,0.15)] bg-[#0e1b22]/95 px-4 py-2 backdrop-blur-md sm:px-6">
+          <div className="flex flex-wrap items-center gap-1">
+            <button
+              onClick={() => execCmd("formatBlock", "<h1>")}
+              className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#182730] hover:text-[#eee8d5]"
+              title="Título 1 (H1 ou '# ')"
+            >
+              <Heading1 className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => execCmd("formatBlock", "<h2>")}
+              className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#182730] hover:text-[#eee8d5]"
+              title="Título 2 (H2 ou '## ')"
+            >
+              <Heading2 className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => execCmd("formatBlock", "<h3>")}
+              className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#182730] hover:text-[#eee8d5]"
+              title="Título 3 (H3 ou '### ')"
+            >
+              <Heading3 className="h-4 w-4" />
+            </button>
 
-          <div className="h-4 w-px bg-[rgba(147,161,161,0.2)] mx-1" />
+            <div className="h-4 w-px bg-[rgba(147,161,161,0.2)] mx-1" />
 
-          <button
-            onClick={() => execCmd("bold")}
-            className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#0a4553] hover:text-[#eee8d5] font-bold"
-            title="Negrito (**texto**)"
-          >
-            <Bold className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => execCmd("italic")}
-            className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#0a4553] hover:text-[#eee8d5] italic"
-            title="Itálico (*texto*)"
-          >
-            <Italic className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => execCmd("underline")}
-            className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#0a4553] hover:text-[#eee8d5] underline"
-            title="Sublinhado"
-          >
-            <Underline className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => execCmd("strikeThrough")}
-            className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#0a4553] hover:text-[#eee8d5] line-through"
-            title="Tachado"
-          >
-            <Strikethrough className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => execCmd("formatBlock", "<pre>")}
-            className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#0a4553] hover:text-[#eee8d5]"
-            title="Bloco de Código (`código`)"
-          >
-            <Code className="h-4 w-4" />
-          </button>
+            <button
+              onClick={() => execCmd("bold")}
+              className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#182730] hover:text-[#eee8d5] font-bold"
+              title="Negrito (**texto**)"
+            >
+              <Bold className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => execCmd("italic")}
+              className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#182730] hover:text-[#eee8d5] italic"
+              title="Itálico (*texto*)"
+            >
+              <Italic className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => execCmd("underline")}
+              className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#182730] hover:text-[#eee8d5] underline"
+              title="Sublinhado"
+            >
+              <Underline className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => execCmd("strikeThrough")}
+              className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#182730] hover:text-[#eee8d5] line-through"
+              title="Tachado"
+            >
+              <Strikethrough className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => execCmd("formatBlock", "<pre>")}
+              className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#182730] hover:text-[#eee8d5]"
+              title="Bloco de Código (`código`)"
+            >
+              <Code className="h-4 w-4" />
+            </button>
 
-          <div className="h-4 w-px bg-[rgba(147,161,161,0.2)] mx-1" />
+            <div className="h-4 w-px bg-[rgba(147,161,161,0.2)] mx-1" />
 
-          <button
-            onClick={() => execCmd("insertUnorderedList")}
-            className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#0a4553] hover:text-[#eee8d5]"
-            title="Lista com Marcadores (- )"
-          >
-            <List className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => execCmd("insertOrderedList")}
-            className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#0a4553] hover:text-[#eee8d5]"
-            title="Lista Numerada (1. )"
-          >
-            <ListOrdered className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => execCmd("formatBlock", "<blockquote>")}
-            className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#0a4553] hover:text-[#eee8d5]"
-            title="Citação (> )"
-          >
-            <Quote className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => execCmd("insertHorizontalRule")}
-            className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#0a4553] hover:text-[#eee8d5]"
-            title="Linha Divisória (---)"
-          >
-            <Minus className="h-4 w-4" />
-          </button>
+            <button
+              onClick={() => execCmd("insertUnorderedList")}
+              className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#182730] hover:text-[#eee8d5]"
+              title="Lista com Marcadores (- )"
+            >
+              <List className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => execCmd("insertOrderedList")}
+              className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#182730] hover:text-[#eee8d5]"
+              title="Lista Numerada (1. )"
+            >
+              <ListOrdered className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => execCmd("formatBlock", "<blockquote>")}
+              className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#182730] hover:text-[#eee8d5]"
+              title="Citação (> )"
+            >
+              <Quote className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => execCmd("insertHorizontalRule")}
+              className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#182730] hover:text-[#eee8d5]"
+              title="Linha Divisória (---)"
+            >
+              <Minus className="h-4 w-4" />
+            </button>
 
-          <div className="h-4 w-px bg-[rgba(147,161,161,0.2)] mx-1" />
+            <div className="h-4 w-px bg-[rgba(147,161,161,0.2)] mx-1" />
 
-          <button
-            onClick={() => execCmd("justifyLeft")}
-            className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#0a4553] hover:text-[#eee8d5]"
-            title="Alinhar à Esquerda"
-          >
-            <AlignLeft className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => execCmd("justifyCenter")}
-            className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#0a4553] hover:text-[#eee8d5]"
-            title="Centralizar"
-          >
-            <AlignCenter className="h-4 w-4" />
-          </button>
-          <button
-            onClick={() => execCmd("justifyRight")}
-            className="rounded-lg p-1.5 text-[#93a1a1] hover:bg-[#0a4553] hover:text-[#eee8d5]"
-            title="Alinhar à Direita"
-          >
-            <AlignRight className="h-4 w-4" />
-          </button>
+            {/* Insert Table Button */}
+            <button
+              onClick={handleInsertTable}
+              className="flex items-center gap-1 rounded-lg bg-[#859900]/15 px-2.5 py-1 text-xs font-semibold text-[#859900] hover:bg-[#859900]/25"
+              title="Inserir Tabela Interativa (Sheets inside Docs)"
+            >
+              <TableIcon className="h-4 w-4" />
+              <span>+ Tabela</span>
+            </button>
+          </div>
 
-          <div className="h-4 w-px bg-[rgba(147,161,161,0.2)] mx-1" />
+          {/* Paper Texture / Lighting Selector & Companion Button */}
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 rounded-lg bg-[#081318] p-0.5 border border-[rgba(147,161,161,0.15)] text-[10px]">
+              <button
+                onClick={() => setPaperTheme("sand-dark")}
+                className={`px-2 py-0.5 rounded transition-colors ${
+                  paperTheme === "sand-dark" ? "bg-[#182730] text-[#2aa198] font-bold" : "text-[#93a1a1]"
+                }`}
+                title="Folha Areia Noturna (Suave aos Olhos)"
+              >
+                🌙 Areia
+              </button>
+              <button
+                onClick={() => setPaperTheme("linen-sepia")}
+                className={`px-2 py-0.5 rounded transition-colors ${
+                  paperTheme === "linen-sepia" ? "bg-[#282218] text-[#e0b838] font-bold" : "text-[#93a1a1]"
+                }`}
+                title="Folha Sépia Linho (Tons Quentes)"
+              >
+                📜 Sépia
+              </button>
+              <button
+                onClick={() => setPaperTheme("sand-light")}
+                className={`px-2 py-0.5 rounded transition-colors ${
+                  paperTheme === "sand-light" ? "bg-[#fbf8f1] text-[#1e293b] font-bold" : "text-[#93a1a1]"
+                }`}
+                title="Folha Papel Real Claro (Papiro)"
+              >
+                ☀️ Papel
+              </button>
+            </div>
 
-          {/* Insert Table Button */}
-          <button
-            onClick={handleInsertTable}
-            className="flex items-center gap-1 rounded-lg bg-[#859900]/15 px-2.5 py-1 text-xs font-semibold text-[#859900] hover:bg-[#859900]/25"
-            title="Inserir Tabela Interativa (Sheets inside Docs)"
-          >
-            <TableIcon className="h-4 w-4" />
-            <span>+ Tabela (Sheets)</span>
-          </button>
-
-          <div className="h-4 w-px bg-[rgba(147,161,161,0.2)] mx-1" />
-
-          {/* Workspace Companion & Drive Toolbar Button */}
-          <button
-            onClick={() => setShowCompanion(!showCompanion)}
-            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition-colors ${
-              showCompanion
-                ? "bg-[#2aa198]/25 text-[#2aa198] border border-[#2aa198]/40"
-                : "bg-[#073642] text-[#eee8d5] hover:bg-[#0a4553]"
-            }`}
-            title="Abrir Companion do Workspace & Drive (Ctrl+B)"
-          >
-            <Cloud className="h-3.5 w-3.5 text-[#2aa198]" />
-            <span>Drive & Companion</span>
-            <span className="text-[9px] font-mono text-[#586e75] bg-[#002b36] px-1 rounded">⌘B</span>
-          </button>
+            {/* Workspace Companion & Drive Toolbar Button */}
+            <button
+              onClick={() => setShowCompanion(!showCompanion)}
+              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition-colors ${
+                showCompanion
+                  ? "bg-[#2aa198]/25 text-[#2aa198] border border-[#2aa198]/40"
+                  : "bg-[#122129] text-[#eee8d5] hover:bg-[#182730]"
+              }`}
+              title="Abrir Companion do Workspace & Drive (Ctrl+B)"
+            >
+              <Cloud className="h-3.5 w-3.5 text-[#2aa198]" />
+              <span className="hidden sm:inline">Drive & Companion</span>
+            </button>
+          </div>
         </div>
 
         {/* Main Split Area: Editor Canvas + Comments Sidebar */}
         <div className="flex flex-1 overflow-hidden">
           {/* Docs Page / Paper Canvas Container */}
-          <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-[#002b36]/30">
-            <div className="mx-auto max-w-3xl min-h-[550px] rounded-2xl border border-[rgba(147,161,161,0.12)] bg-[#073642] p-6 sm:p-12 shadow-xl">
+          <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-[#081216]">
+            <div
+              className={`mx-auto max-w-3xl min-h-[580px] rounded-2xl border p-6 sm:p-12 shadow-2xl transition-all duration-200 ${
+                paperTheme === "sand-light"
+                  ? "bg-[#fbf8f1] border-[#e5e0d3] text-[#1e293b] shadow-[0_15px_45px_rgba(0,0,0,0.35)]"
+                  : paperTheme === "linen-sepia"
+                  ? "bg-[#201a14] border-[#b58900]/30 text-[#f5eedf] shadow-[0_15px_45px_rgba(0,0,0,0.5)]"
+                  : "bg-[#131e25] border-[rgba(147,161,161,0.18)] text-[#eee8d5] shadow-[0_15px_45px_rgba(0,0,0,0.5)]"
+              }`}
+            >
               {/* Document Title Input */}
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Título do Documento..."
-                className="w-full border-b border-[rgba(147,161,161,0.12)] bg-transparent pb-3 text-2xl font-bold text-[#eee8d5] outline-none placeholder-[#586e75] focus:border-[#2aa198]"
+                className={`w-full border-b pb-3 text-2xl font-bold outline-none placeholder-[#8899a6] focus:border-[#2aa198] bg-transparent ${
+                  paperTheme === "sand-light"
+                    ? "border-[#d8d0c2] text-[#0f172a]"
+                    : "border-[rgba(147,161,161,0.18)] text-[#eee8d5]"
+                }`}
               />
 
               {/* Tags Editor */}
@@ -834,12 +857,16 @@ Retorne APENAS o conteúdo em HTML formatado pronto para ser inserido no editor.
                 {tags.map((tag) => (
                   <span
                     key={tag}
-                    className="flex items-center gap-1 rounded-md bg-[#002b36] border border-[rgba(147,161,161,0.12)] px-2 py-0.5 text-[11px] font-semibold text-[#93a1a1]"
+                    className={`flex items-center gap-1 rounded-md border px-2 py-0.5 text-[11px] font-semibold ${
+                      paperTheme === "sand-light"
+                        ? "bg-[#ede7db] border-[#d8d0c2] text-[#475569]"
+                        : "bg-[#091419] border-[rgba(147,161,161,0.15)] text-[#93a1a1]"
+                    }`}
                   >
                     #{tag}
                     <button
                       onClick={() => handleRemoveTag(tag)}
-                      className="ml-1 text-[#586e75] hover:text-[#dc322f]"
+                      className="ml-1 text-[#64748b] hover:text-[#dc322f]"
                     >
                       ×
                     </button>
@@ -852,7 +879,11 @@ Retorne APENAS o conteúdo em HTML formatado pronto para ser inserido no editor.
                     onChange={(e) => setNewTagInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleAddTag()}
                     placeholder="+ Adicionar tag"
-                    className="w-28 border-b border-[rgba(147,161,161,0.12)] bg-transparent text-[11px] text-[#eee8d5] placeholder-[#586e75] outline-none focus:border-[#2aa198]"
+                    className={`w-28 border-b bg-transparent text-[11px] placeholder-[#8899a6] outline-none focus:border-[#2aa198] ${
+                      paperTheme === "sand-light"
+                        ? "border-[#d8d0c2] text-[#1e293b]"
+                        : "border-[rgba(147,161,161,0.15)] text-[#eee8d5]"
+                    }`}
                   />
                 </div>
               </div>
@@ -863,7 +894,11 @@ Retorne APENAS o conteúdo em HTML formatado pronto para ser inserido no editor.
                 contentEditable
                 onInput={handleContentChange}
                 onKeyDown={handleEditorKeyDown}
-                className="prose prose-invert max-w-none mt-6 min-h-[300px] outline-none text-[#eee8d5] leading-relaxed text-sm"
+                className={`prose max-w-none mt-6 min-h-[350px] outline-none leading-relaxed text-sm ${
+                  paperTheme === "sand-light"
+                    ? "prose-slate text-[#1e293b]"
+                    : "prose-invert text-[#eee8d5]"
+                }`}
               />
 
               {/* Embedded Tables (Sheets inside Docs) */}
