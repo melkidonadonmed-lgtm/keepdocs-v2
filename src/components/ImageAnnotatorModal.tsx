@@ -442,7 +442,7 @@ export const ImageAnnotatorModal: React.FC<ImageAnnotatorModalProps> = ({
 
     setIsAiGenerating(true);
     try {
-      const res = await fetch("/api/gemini/generate-image-asset", {
+      const res = await fetch("/api/gemini/generate-image", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: aiImagePrompt }),

@@ -113,7 +113,8 @@ export const FormFillerModal: React.FC<FormFillerModalProps> = ({
         throw new Error("Falha ao se comunicar com a IA para estruturar o modelo.");
       }
 
-      const generatedTemplate = await res.json();
+      const resJson = await res.json();
+      const generatedTemplate = resJson.template || resJson;
 
       if (!generatedTemplate.fields || generatedTemplate.fields.length === 0) {
         throw new Error("Nenhum campo preenchível foi detectado neste documento. Tente outro arquivo.");
