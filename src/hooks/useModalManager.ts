@@ -21,6 +21,7 @@ export function useModalManager() {
   const [showDriveModal, setShowDriveModal] = useState(false);
   const [showCommandPalette, setShowCommandPalette] = useState(false);
   const [showAIAssistant, setShowAIAssistant] = useState(false);
+  const [showAnalyticsModal, setShowAnalyticsModal] = useState(false);
   const [showCompanion, setShowCompanion] = useState(false);
   const [companionMode, setCompanionMode] = useState<CompanionMode>("window");
 
@@ -83,6 +84,7 @@ export function useModalManager() {
   const closeDriveModal = useCallback(() => setShowDriveModal(false), []);
   const closeCommandPalette = useCallback(() => setShowCommandPalette(false), []);
   const closeAIAssistant = useCallback(() => setShowAIAssistant(false), []);
+  const closeAnalyticsModal = useCallback(() => setShowAnalyticsModal(false), []);
   const closeCompanion = useCallback(() => setShowCompanion(false), []);
 
   // Toggles
@@ -127,6 +129,10 @@ export function useModalManager() {
     showAIAssistant,
     openAIAssistant: () => setShowAIAssistant(true),
     closeAIAssistant,
+    // Workspace Analytics Dashboard
+    showAnalyticsModal,
+    openAnalyticsModal: () => setShowAnalyticsModal(true),
+    closeAnalyticsModal,
     // Workspace Companion
     showCompanion,
     companionMode,

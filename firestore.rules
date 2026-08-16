@@ -1,0 +1,127 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Common Security Helpers
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Entity Validation Blueprint: Note
+    function isValidNote(data) {
+      return data.id is string && isValidId(data.id) &&
+             data.userId is string && data.userId == request.auth.uid &&
+             data.title is string && data.title.size() <= 500 &&
+             data.type in ['standard', 'doc', 'form', 'sheet', 'canvas', 'checklist'] &&
+             data.color is string && data.color.size() <= 32 &&
+             data.pinned is bool &&
+             data.archived is bool &&
+             data.trashed is bool &&
+             (!('content' in data) || (data.content is string && data.content.size() <= 200000)) &&
+             (!('plainTextContent' in data) || (data.plainTextContent is string && data.plainTextContent.size() <= 200000)) &&
+             (!('folderId' in data) || (data.folderId == null || (data.folderId is string && data.folderId.size() <= 128))) &&
+             (!('tags' in data) || (data.tags is list && data.tags.size() <= 50)) &&
+             (!('tablesJson' in data) || (data.tablesJson is string && data.tablesJson.size() <= 500000)) &&
+             (!('sheetDataJson' in data) || (data.sheetDataJson is string && data.sheetDataJson.size() <= 500000)) &&
+             (!('imageAnnotationJson' in data) || (data.imageAnnotationJson is string && data.imageAnnotationJson.size() <= 1500000)) &&
+             (!('formTemplateId' in data) || (data.formTemplateId is string && data.formTemplateId.size() <= 128)) &&
+             (!('formValuesJson' in data) || (data.formValuesJson is string && data.formValuesJson.size() <= 200000)) &&
+             (!('checklist' in data) || (data.checklist is list && data.checklist.size() <= 200)) &&
+             (!('comments' in data) || (data.comments is list && data.comments.size() <= 200)) &&
+             (!('annotations' in data) || (data.annotations is list && data.annotations.size() <= 50)) &&
+             (!('attachments' in data) || (data.attachments is list && data.attachments.size() <= 50)) &&
+             (!('driveAttachments' in data) || (data.driveAttachments is list && data.driveAttachments.size() <= 50)) &&
+             (!('coverImage' in data) || (data.coverImage is string && data.coverImage.size() <= 1000)) &&
+             (!('driveSyncId' in data) || (data.driveSyncId is string && data.driveSyncId.size() <= 256)) &&
+             (!('googleDocId' in data) || (data.googleDocId is string && data.googleDocId.size() <= 256)) &&
+             (!('googleDocUrl' in data) || (data.googleDocUrl is string && data.googleDocUrl.size() <= 1000)) &&
+             (!('googleDocThumbnail' in data) || (data.googleDocThumbnail is string && data.googleDocThumbnail.size() <= 2000)) &&
+             (!('googleDocSnippet' in data) || (data.googleDocSnippet is string && data.googleDocSnippet.size() <= 5000)) &&
+             (!('googleDocModifiedTime' in data) || (data.googleDocModifiedTime is string && data.googleDocModifiedTime.size() <= 64));
+    }
+
+    // Entity Validation Blueprint: Folder
+    function isValidFolder(data) {
+      return data.id is string && isValidId(data.id) &&
+             data.userId is string && data.userId == request.auth.uid &&
+             data.name is string && data.name.size() >= 1 && data.name.size() <= 120;
+    }
+
+    // Entity Validation Blueprint: UserSettings
+    function isValidUserSettings(data) {
+      return data.userId is string && data.userId == request.auth.uid &&
+             (!('layoutMode' in data) || data.layoutMode in ['grid', 'compact', 'list', 'dense', 'masonry']);
+    }
+
+    // Collection: Notes
+    match /notes/{noteId} {
+      allow get: if isOwner(resource.data.userId);
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isOwner(incoming().userId) &&
+                       isValidId(noteId) &&
+                       noteId == incoming().id &&
+                       isValidNote(incoming());
+      allow update: if isOwner(existing().userId) &&
+                       isOwner(incoming().userId) &&
+                       isValidId(noteId) &&
+                       incoming().id == existing().id &&
+                       incoming().userId == existing().userId &&
+                       isValidNote(incoming());
+      allow delete: if isOwner(existing().userId);
+    }
+
+    // Collection: Folders
+    match /folders/{folderId} {
+      allow get: if isOwner(resource.data.userId);
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isOwner(incoming().userId) &&
+                       isValidId(folderId) &&
+                       folderId == incoming().id &&
+                       isValidFolder(incoming());
+      allow update: if isOwner(existing().userId) &&
+                       isOwner(incoming().userId) &&
+                       isValidId(folderId) &&
+                       incoming().id == existing().id &&
+                       incoming().userId == existing().userId &&
+                       isValidFolder(incoming());
+      allow delete: if isOwner(existing().userId);
+    }
+
+    // Collection: UserSettings
+    match /user_settings/{userId} {
+      allow get: if isOwner(resource.data.userId);
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isOwner(incoming().userId) &&
+                       isValidId(userId) &&
+                       userId == incoming().userId &&
+                       isValidUserSettings(incoming());
+      allow update: if isOwner(existing().userId) &&
+                       isOwner(incoming().userId) &&
+                       isValidId(userId) &&
+                       incoming().userId == existing().userId &&
+                       isValidUserSettings(incoming());
+      allow delete: if isOwner(existing().userId);
+    }
+  }
+}

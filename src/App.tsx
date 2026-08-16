@@ -15,6 +15,9 @@ import { FloatingQuickMenu } from "./components/FloatingQuickMenu";
 import { TagFilterBar } from "./components/TagFilterBar";
 import { WorkspaceCompanion } from "./components/WorkspaceCompanion";
 import { CompanionLauncher } from "./components/CompanionLauncher";
+import { WorkspaceAnalyticsModal } from "./components/WorkspaceAnalyticsModal";
+import { UndoToast } from "./components/UndoToast";
+import { MobileBottomNav } from "./components/MobileBottomNav";
 
 import { Note } from "./types";
 import { useNotesState } from "./hooks/useNotesState";
@@ -39,6 +42,8 @@ export default function App() {
     setNotes,
     storageError,
     setStorageError,
+    undoAction,
+    setUndoAction,
     saveNote,
     togglePin,
     changeColor,
@@ -141,6 +146,7 @@ export default function App() {
           onOpenDriveModal={modals.openDriveModal}
           onNewNote={handleNewNote}
           onOpenAIAssistant={modals.openAIAssistant}
+          onOpenAnalytics={modals.openAnalyticsModal}
           onToggleMobileSidebar={() => filters.setIsMobileSidebarOpen(!filters.isMobileSidebarOpen)}
           onToggleSidebar={() => filters.setIsSidebarCollapsed(!filters.isSidebarCollapsed)}
           driveSyncedAt={driveSyncedAt}
@@ -172,7 +178,7 @@ export default function App() {
             notesCounts={filters.notesCounts}
           />
 
-          <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+          <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 pb-20 md:pb-8">
             <TagFilterBar
               allTags={filters.allTags}
               selectedTag={filters.selectedTag}
@@ -314,6 +320,21 @@ export default function App() {
           }}
         />
 
+        {/* Workspace Analytics & Metrics Dashboard Modal */}
+        <WorkspaceAnalyticsModal
+          isOpen={modals.showAnalyticsModal}
+          onClose={modals.closeAnalyticsModal}
+          notes={notes}
+          folders={folders}
+          onOpenNote={modals.openNote}
+        />
+
+        {/* Optimistic UI Undo Toast */}
+        <UndoToast
+          action={undoAction}
+          onDismiss={() => setUndoAction(null)}
+        />
+
         {/* Storage Failure Banner */}
         {storageError && (
           <div className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-2xl border border-red-200 bg-red-50 px-4 py-2.5 text-xs font-semibold text-red-700 shadow-xl dark:border-red-900/60 dark:bg-red-950/90 dark:text-red-300">
@@ -327,15 +348,30 @@ export default function App() {
           </div>
         )}
 
-        {/* Floating Quick Action Button & Popover */}
-        <FloatingQuickMenu
-          onCreateDoc={() => handleNewNote("doc")}
-          onCreateTable={() => handleNewNote("sheet")}
-          onCreateForm={() => handleNewNote("form")}
-          onOpenCanvas={() => handleNewNote("canvas")}
-          onImportDocument={driveImport.importDocument}
-          onOpenCommandPalette={modals.openCommandPalette}
+        {/* Mobile Bottom Ergonomic Navigation Bar */}
+        <MobileBottomNav
+          currentFilter={filters.currentFilter}
+          onSelectFilter={(f) => {
+            filters.setFilterAndClearSelections(f);
+            filters.setIsMobileSidebarOpen(false);
+          }}
+          onOpenNewNote={() => handleNewNote("doc")}
+          onOpenAnalytics={modals.openAnalyticsModal}
+          onToggleSidebar={() => filters.setIsMobileSidebarOpen(!filters.isMobileSidebarOpen)}
+          isSidebarOpen={filters.isMobileSidebarOpen}
         />
+
+        {/* Floating Quick Action Button & Popover (Desktop / Tablet) */}
+        <div className="hidden md:block">
+          <FloatingQuickMenu
+            onCreateDoc={() => handleNewNote("doc")}
+            onCreateTable={() => handleNewNote("sheet")}
+            onCreateForm={() => handleNewNote("form")}
+            onOpenCanvas={() => handleNewNote("canvas")}
+            onImportDocument={driveImport.importDocument}
+            onOpenCommandPalette={modals.openCommandPalette}
+          />
+        </div>
       </div>
     </DndProvider>
   );

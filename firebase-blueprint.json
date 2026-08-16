@@ -1,0 +1,82 @@
+{
+  "entities": {
+    "Note": {
+      "title": "Note",
+      "description": "User note with Keep-like attributes and Docs rich text content",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 500 },
+        "content": { "type": "string", "maxLength": 200000 },
+        "plainTextContent": { "type": "string", "maxLength": 200000 },
+        "type": { "type": "string", "enum": ["standard", "doc", "form", "sheet", "canvas", "checklist"] },
+        "color": { "type": "string", "maxLength": 32 },
+        "pinned": { "type": "boolean" },
+        "archived": { "type": "boolean" },
+        "trashed": { "type": "boolean" },
+        "folderId": { "type": "string", "maxLength": 128 },
+        "tags": { "type": "array" },
+        "tablesJson": { "type": "string", "maxLength": 500000 },
+        "sheetDataJson": { "type": "string", "maxLength": 500000 },
+        "imageAnnotationJson": { "type": "string", "maxLength": 1500000 },
+        "formTemplateId": { "type": "string", "maxLength": 128 },
+        "formValuesJson": { "type": "string", "maxLength": 200000 },
+        "checklist": { "type": "array" },
+        "comments": { "type": "array" },
+        "annotations": { "type": "array" },
+        "attachments": { "type": "array" },
+        "driveAttachments": { "type": "array" },
+        "coverImage": { "type": "string", "maxLength": 1000 },
+        "driveSyncId": { "type": "string", "maxLength": 256 },
+        "googleDocId": { "type": "string", "maxLength": 256 },
+        "googleDocUrl": { "type": "string", "maxLength": 1000 },
+        "googleDocThumbnail": { "type": "string", "maxLength": 2000 },
+        "googleDocSnippet": { "type": "string", "maxLength": 5000 },
+        "googleDocModifiedTime": { "type": "string", "maxLength": 64 },
+        "createdAt": { "type": "string", "maxLength": 64 },
+        "updatedAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "userId", "title", "type", "color", "pinned", "archived", "trashed"]
+    },
+    "Folder": {
+      "title": "Folder",
+      "description": "Organization folder for notes",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 120, "minLength": 1 },
+        "createdAt": { "type": "string", "maxLength": 64 },
+        "updatedAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "userId", "name"]
+    },
+    "UserSettings": {
+      "title": "UserSettings",
+      "description": "Custom color palette and layout preferences for the user",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "palette": { "type": "object" },
+        "layoutMode": { "type": "string", "enum": ["grid", "compact", "list", "dense", "masonry"] },
+        "updatedAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["userId"]
+    }
+  },
+  "firestore": {
+    "/notes/{noteId}": {
+      "schema": "Note",
+      "description": "User notes collection scoped to the authenticated owner"
+    },
+    "/folders/{folderId}": {
+      "schema": "Folder",
+      "description": "User folders collection scoped to the authenticated owner"
+    },
+    "/user_settings/{userId}": {
+      "schema": "UserSettings",
+      "description": "User specific workspace settings and custom colors"
+    }
+  }
+}

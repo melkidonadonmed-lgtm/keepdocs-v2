@@ -482,7 +482,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <span className="section-label">Cores</span>
           {selectedColor && (
             <button
-              onClick={() => setSelectedColor(null)}
+              onClick={() => {
+                setSelectedColor(null);
+                if (onCloseMobile) onCloseMobile();
+              }}
               className="text-[10px] font-medium text-[#2aa198] hover:underline"
             >
               Limpar
@@ -493,7 +496,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {colors.map((c) => (
             <button
               key={c.name}
-              onClick={() => setSelectedColor(selectedColor === c.name ? null : c.name)}
+              onClick={() => {
+                setSelectedColor(selectedColor === c.name ? null : c.name);
+                if (onCloseMobile) onCloseMobile();
+              }}
               className={`h-5 w-5 rounded-full border transition-all ${c.class} ${
                 selectedColor === c.name
                   ? "ring-2 ring-[#2aa198] ring-offset-2 ring-offset-[#01303c]"
@@ -631,14 +637,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
         )}
       </aside>
 
-      {/* Mobile Slide-Over Drawer (<768px) */}
+      {/* Mobile Slide-Over Drawer (<768px) - Sem blur invasivo, ágil e compacto */}
       {isMobileOpen && (
-        <div className="fixed inset-0 z-50 flex md:hidden">
+        <div className="fixed inset-0 z-50 flex md:hidden animate-in fade-in duration-150">
           <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
+            className="fixed inset-0 bg-black/50 transition-opacity"
             onClick={onCloseMobile}
+            aria-label="Fechar menu"
           />
-          <aside className="relative z-50 w-72 max-w-[80vw] flex-shrink-0 overflow-y-auto border-r border-[rgba(147,161,161,0.12)] bg-[#01303c] p-4 shadow-2xl">
+          <aside className="relative z-50 w-64 max-w-[75vw] flex-shrink-0 overflow-y-auto border-r border-[rgba(147,161,161,0.15)] bg-[#01303c] p-4 shadow-2xl animate-in slide-in-from-left duration-200">
             {sidebarContent}
           </aside>
         </div>

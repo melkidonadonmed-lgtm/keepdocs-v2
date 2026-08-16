@@ -223,6 +223,51 @@ const handleImageGeneration = async (req: express.Request, res: express.Response
 app.post("/api/gemini/generate-image", handleImageGeneration);
 app.post("/api/gemini/generate-image-asset", handleImageGeneration);
 
+// Gemini Workspace Data Analytics & Chat with Notes/Sheets
+app.post("/api/gemini/analyze-workspace", async (req, res) => {
+  try {
+    const { prompt, workspaceContext, activeNoteContext } = req.body;
+    if (!prompt) {
+      return res.status(400).json({ error: "O parâmetro 'prompt' é obrigatório." });
+    }
+
+    const ai = getGeminiClient();
+
+    let contextSection = "";
+    if (activeNoteContext) {
+      contextSection += `\n--- NOTA ATIVA ATUALMENTE EM EDIÇÃO ---\n${JSON.stringify(activeNoteContext, null, 2)}\n`;
+    }
+    if (workspaceContext) {
+      contextSection += `\n--- RESUMO DO WORKSPACE (NOTAS, TABELAS E MÉTRICAS) ---\n${JSON.stringify(workspaceContext, null, 2)}\n`;
+    }
+
+    const contents = `Pergunta/Solicitação Analítica do Usuário:
+${prompt}
+
+<<<DADOS_WORKSPACE>>>
+${contextSection || "Nenhuma nota específica vinculada."}
+<<<FIM_DADOS_WORKSPACE>>>`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-3.7-flash",
+      contents,
+      config: {
+        systemInstruction:
+          "Você é o analista de dados e assistente de produtividade executivo do KeepDocs Workspace. " +
+          "Você tem acesso ao resumo estruturado das notas, tabelas interativas, formulários e mini-planilhas do usuário. " +
+          "Analise os dados, realize contagens, somatórios de tabelas, resumos de tarefas e responda de forma elegante, precisa e formatada em Markdown com tabelas ou listas quando apropriado. " +
+          "Se o usuário pedir para gerar ou resumir uma ação, forneça respostas acionáveis e de alto valor prático.",
+        temperature: 0.4,
+      },
+    });
+
+    return res.json({ text: response.text });
+  } catch (err: any) {
+    console.error("Erro na rota /api/gemini/analyze-workspace:", err);
+    return res.status(500).json({ error: "Falha ao processar análise do workspace com Gemini." });
+  }
+});
+
 // NOTA DE ARQUITETURA: não existem rotas /api/drive/* neste servidor por decisão
 // deliberada. A integração com o Google Drive é feita 100% no cliente
 // (src/services/google*Service.ts) com o token OAuth do próprio usuário.

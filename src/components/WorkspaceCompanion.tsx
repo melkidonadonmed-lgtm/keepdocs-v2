@@ -421,15 +421,35 @@ Tipo: ${activeNote.type}
 Conteúdo atual (resumo): ${activeNote.content.replace(/<[^>]+>/g, " ").slice(0, 1500)}`;
       }
 
-      const fullPrompt = `${userText}\n${docContext}`;
+      let endpoint = "/api/gemini/generate";
+      let requestBody: any = {
+        prompt: `${userText}\n${docContext}`,
+        systemInstruction: "Você é o assistente inteligente e analista do KeepDocs Workspace. Ajude o usuário a criar, resumir, formatar, organizar e analisar notas, tarefas e documentos. Responda em Markdown limpo, elegante e objetivo em Português.",
+      };
 
-      const res = await fetch("/api/gemini/generate", {
+      if (!activeNote && allNotes && allNotes.length > 0) {
+        endpoint = "/api/gemini/analyze-workspace";
+        requestBody = {
+          prompt: userText,
+          workspaceContext: {
+            totalNotes: allNotes.length,
+            notes: allNotes.filter((n) => !n.trashed).slice(0, 35).map((n) => ({
+              id: n.id,
+              title: n.title,
+              type: n.type,
+              tags: n.tags,
+              pinned: n.pinned,
+              checklistTotal: n.checklist?.length || 0,
+              checklistCompleted: n.checklist?.filter((i) => i.completed).length || 0,
+            })),
+          },
+        };
+      }
+
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          prompt: fullPrompt,
-          systemInstruction: "Você é o assistente inteligente do KeepDocs Workspace. Ajude o usuário a criar, resumir, formatar, organizar e analisar notas e documentos do Google Drive. Responda em Markdown limpo e objetivo em Português.",
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       const data = await res.json();

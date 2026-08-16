@@ -19,6 +19,7 @@ import {
   Upload,
   MoreVertical,
   X,
+  BarChart3,
 } from "lucide-react";
 import { LayoutMode } from "../types";
 
@@ -31,6 +32,7 @@ interface HeaderProps {
   onOpenDriveModal: () => void;
   onNewNote: (type: "doc" | "form" | "sheet" | "canvas" | "checklist") => void;
   onOpenAIAssistant: () => void;
+  onOpenAnalytics?: () => void;
   onToggleMobileSidebar: () => void;
   onToggleSidebar: () => void;
   driveSyncedAt: string | null;
@@ -49,6 +51,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenDriveModal,
   onNewNote,
   onOpenAIAssistant,
+  onOpenAnalytics,
   onToggleMobileSidebar,
   onToggleSidebar,
   driveSyncedAt,
@@ -207,6 +210,18 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
         )}
 
+        {/* Analytics & Metrics Dashboard (Desktop / Tablet) */}
+        {onOpenAnalytics && (
+          <button
+            onClick={onOpenAnalytics}
+            className="btn-ghost hidden md:flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-[#2aa198]"
+            title="Dashboard de Métricas e Análises"
+          >
+            <BarChart3 className="h-3.5 w-3.5" />
+            <span>Métricas</span>
+          </button>
+        )}
+
         {/* AI Assistant Button (Desktop / Tablet) */}
         <button
           onClick={onOpenAIAssistant}
@@ -267,6 +282,18 @@ export const Header: React.FC<HeaderProps> = ({
                 onClick={() => setShowMobileOverflow(false)}
               />
               <div className="absolute right-0 z-50 mt-2 w-52 rounded-xl border border-[rgba(147,161,161,0.12)] bg-[#073642] p-1.5 shadow-2xl">
+                {onOpenAnalytics && (
+                  <button
+                    onClick={() => {
+                      onOpenAnalytics();
+                      setShowMobileOverflow(false);
+                    }}
+                    className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-[#2aa198] hover:bg-[#0a4553]"
+                  >
+                    <BarChart3 className="h-4 w-4" />
+                    <span>Dashboard de Métricas</span>
+                  </button>
+                )}
                 <button
                   onClick={() => {
                     onOpenAIAssistant();

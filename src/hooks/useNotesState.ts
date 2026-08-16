@@ -3,18 +3,21 @@ import { Note, NoteColor } from "../types";
 import { INITIAL_NOTES } from "../data/initialNotes";
 import { loadNotes, saveNotes } from "../services/notesDb";
 
+import { UndoAction } from "../components/UndoToast";
+
 /**
  * Estado central das notas + persistência no IndexedDB.
  *
  * Responsável por:
  * - carregar as notas do IndexedDB na inicialização (com migração do localStorage legado);
  * - salvar com debounce (~500ms) sempre que as notas mudam, expondo `storageError` em caso de falha;
- * - ações de nota: save (upsert), pin, cor, duplicar, reordenar (D&D) e mover para a lixeira.
+ * - ações de nota: save (upsert), pin, cor, duplicar, reordenar (D&D), mover para lixeira e suporte a Desfazer (Undo).
  */
 export function useNotesState() {
   const [notes, setNotes] = useState<Note[]>(INITIAL_NOTES);
   const [notesLoaded, setNotesLoaded] = useState(false);
   const [storageError, setStorageError] = useState<string | null>(null);
+  const [undoAction, setUndoAction] = useState<UndoAction | null>(null);
 
   // Load notes from IndexedDB on startup (with localStorage migration fallback)
   useEffect(() => {
@@ -74,14 +77,24 @@ export function useNotesState() {
 
   const duplicateNote = useCallback((note: Note, e: MouseEvent) => {
     e.stopPropagation();
+    const newId = "note_" + Date.now();
     const dup: Note = {
       ...note,
-      id: "note_" + Date.now(),
+      id: newId,
       title: `${note.title} (Cópia)`,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
     setNotes((prev) => [dup, ...prev]);
+
+    setUndoAction({
+      id: `undo_dup_${newId}`,
+      message: `Cópia criada: "${dup.title.slice(0, 20)}..."`,
+      onUndo: () => {
+        setNotes((prev) => prev.filter((n) => n.id !== newId));
+      },
+      durationMs: 5000,
+    });
   }, []);
 
   const reorderNotes = useCallback((draggedId: string, targetId: string) => {
@@ -108,24 +121,47 @@ export function useNotesState() {
     });
   }, []);
 
-  // Move para a lixeira (soft delete)
-  const trashNote = useCallback((id: string, e?: MouseEvent) => {
-    if (e) e.stopPropagation();
+  // Restaura nota da lixeira
+  const restoreNote = useCallback((id: string) => {
     setNotes((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, trashed: true, updatedAt: new Date().toISOString() } : n))
+      prev.map((n) => (n.id === id ? { ...n, trashed: false, updatedAt: new Date().toISOString() } : n))
     );
   }, []);
+
+  // Move para a lixeira (soft delete) com ação de Desfazer
+  const trashNote = useCallback(
+    (id: string, e?: MouseEvent) => {
+      if (e) e.stopPropagation();
+      let noteTitle = "Nota";
+      setNotes((prev) => {
+        const target = prev.find((n) => n.id === id);
+        if (target) noteTitle = target.title || "Nota";
+        return prev.map((n) => (n.id === id ? { ...n, trashed: true, updatedAt: new Date().toISOString() } : n));
+      });
+
+      setUndoAction({
+        id: `undo_trash_${id}_${Date.now()}`,
+        message: `"${noteTitle.slice(0, 20)}${noteTitle.length > 20 ? "..." : ""}" movida para a lixeira`,
+        onUndo: () => restoreNote(id),
+        durationMs: 5000,
+      });
+    },
+    [restoreNote]
+  );
 
   return {
     notes,
     setNotes,
     storageError,
     setStorageError,
+    undoAction,
+    setUndoAction,
     saveNote,
     togglePin,
     changeColor,
     duplicateNote,
     reorderNotes,
     trashNote,
+    restoreNote,
   };
 }
