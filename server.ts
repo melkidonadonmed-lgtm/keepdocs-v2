@@ -175,13 +175,10 @@ app.post("/api/gemini/generate-image", async (req, res) => {
   }
 });
 
-// Drive Sync API — ainda não implementado (placeholder honesto)
-app.post("/api/drive/sync", (_req, res) => {
-  return res.status(501).json({
-    success: false,
-    error: "A sincronização com o Google Drive ainda não está implementada (Beta). Nenhum dado foi enviado.",
-  });
-});
+// NOTA DE ARQUITETURA: não existem rotas /api/drive/* neste servidor por decisão
+// deliberada. A integração com o Google Drive é feita 100% no cliente
+// (src/services/google*Service.ts) com o token OAuth do próprio usuário.
+// O back-end atua apenas como proxy do Gemini, para proteger a GEMINI_API_KEY.
 
 // Vite or Static file serving
 async function startServer() {
