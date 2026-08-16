@@ -191,10 +191,62 @@ export const DrivePickerModal: React.FC<DrivePickerModalProps> = ({
       }
     } catch (err: any) {
       console.error("Auth error:", err);
-      setAuthError(err.message || "Não foi possível autenticar com o Google Workspace.");
+      if (err?.code === "auth/unauthorized-domain" || err?.message?.includes("unauthorized-domain")) {
+        setAuthError(
+          "Domínio 'localhost' não autorizado no Firebase Auth. Adicione 'localhost' e '127.0.0.1' no Firebase Console (Authentication > Settings > Authorized Domains). Você também pode ativar o Modo Demo abaixo para testar as importações."
+        );
+      } else {
+        setAuthError(err?.message || "Não foi possível autenticar com o Google Workspace.");
+      }
     } finally {
       setIsAuthenticating(false);
     }
+  };
+
+  const handleLoadDemoWorkspace = () => {
+    const demoDocs: GoogleDriveItem[] = [
+      {
+        id: "demo_doc_1",
+        name: "Documento de Arquitetura de Software.gdoc",
+        mimeType: "application/vnd.google-apps.document",
+        modifiedTime: new Date().toISOString(),
+        webViewLink: "https://docs.google.com/document/d/demo1",
+      },
+      {
+        id: "demo_doc_2",
+        name: "Manual do Usuário KeepDocs.gdoc",
+        mimeType: "application/vnd.google-apps.document",
+        modifiedTime: new Date().toISOString(),
+        webViewLink: "https://docs.google.com/document/d/demo2",
+      },
+    ];
+
+    const demoSheets: GoogleDriveItem[] = [
+      {
+        id: "demo_sheet_1",
+        name: "Planilha de Controle Financeiro 2026.gsheet",
+        mimeType: "application/vnd.google-apps.spreadsheet",
+        modifiedTime: new Date().toISOString(),
+        webViewLink: "https://docs.google.com/spreadsheets/d/demo1",
+      },
+    ];
+
+    const demoSlides: GoogleDriveItem[] = [
+      {
+        id: "demo_slide_1",
+        name: "Apresentação Pitch Executivo.gslides",
+        mimeType: "application/vnd.google-apps.presentation",
+        modifiedTime: new Date().toISOString(),
+        webViewLink: "https://docs.google.com/presentation/d/demo1",
+      },
+    ];
+
+    setGoogleDocs(demoDocs);
+    setGoogleSheets(demoSheets);
+    setGoogleSlides(demoSlides);
+    setDriveFiles([...demoDocs, ...demoSheets, ...demoSlides]);
+    setAccessTokenState("demo_token");
+    setAuthError(null);
   };
 
   const handleSignOut = async () => {
@@ -576,23 +628,40 @@ export const DrivePickerModal: React.FC<DrivePickerModalProps> = ({
                 </button>
               </>
             ) : (
-              <button
-                onClick={handleSignIn}
-                disabled={isAuthenticating}
-                className="flex items-center gap-2 rounded-xl bg-[#2aa198] px-4 py-1.5 text-xs font-bold text-[#002b36] shadow-sm hover:brightness-105 active:scale-95 transition-all"
-              >
-                <LogIn className="h-4 w-4" />
-                <span>{isAuthenticating ? "Conectando..." : "Conectar com Google"}</span>
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleLoadDemoWorkspace}
+                  className="flex items-center gap-1.5 rounded-xl border border-[rgba(147,161,161,0.2)] bg-[#073642] px-3 py-1.5 text-xs font-semibold text-[#2aa198] hover:bg-[#0a4553] transition-colors"
+                  title="Carregar documentos e planilhas de demonstração locais"
+                >
+                  <span>Modo Demonstração</span>
+                </button>
+                <button
+                  onClick={handleSignIn}
+                  disabled={isAuthenticating}
+                  className="flex items-center gap-2 rounded-xl bg-[#2aa198] px-4 py-1.5 text-xs font-bold text-[#002b36] shadow-sm hover:brightness-105 active:scale-95 transition-all"
+                >
+                  <LogIn className="h-4 w-4" />
+                  <span>{isAuthenticating ? "Conectando..." : "Conectar com Google"}</span>
+                </button>
+              </div>
             )}
           </div>
         </div>
 
         {/* Global Error Banner */}
         {authError && (
-          <div className="flex items-center gap-2 bg-[#dc322f]/15 border-b border-[#dc322f]/30 px-6 py-2 text-xs text-[#dc322f]">
-            <AlertCircle className="h-4 w-4 shrink-0" />
-            <span>{authError}</span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-[#dc322f]/15 border-b border-[#dc322f]/30 px-6 py-2.5 text-xs text-[#f26360]">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="h-4 w-4 shrink-0 text-[#dc322f]" />
+              <span>{authError}</span>
+            </div>
+            <button
+              onClick={handleLoadDemoWorkspace}
+              className="self-start sm:self-auto rounded-lg bg-[#dc322f]/20 px-2.5 py-1 text-[11px] font-semibold text-[#eee8d5] hover:bg-[#dc322f]/30 transition-colors"
+            >
+              Ativar Modo Demo
+            </button>
           </div>
         )}
 

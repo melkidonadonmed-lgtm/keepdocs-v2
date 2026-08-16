@@ -2,17 +2,17 @@
 
 @layer base {
   :root {
-    --bg-page: #002b36;
-    --bg-card: #073642;
-    --bg-overlay: #0a4553;
-    --bg-sidebar: #01303c;
+    --bg-page: #08161c;
+    --bg-card: #0d222a;
+    --bg-overlay: #122d37;
+    --bg-sidebar: #051318;
     
     --text-primary: #eee8d5;
     --text-secondary: #93a1a1;
-    --text-muted: #586e75;
+    --text-muted: #657b83;
     
-    --border-color: rgba(147, 161, 161, 0.12);
-    --border-top-highlight: rgba(238, 232, 213, 0.08);
+    --border-color: rgba(147, 161, 161, 0.14);
+    --border-top-highlight: rgba(238, 232, 213, 0.12);
     
     --accent-teal: #2aa198;
     --accent-yellow: #b58900;
@@ -30,6 +30,8 @@
 
   body {
     background-color: var(--bg-page);
+    background-image: radial-gradient(ellipse 80% 50% at 50% -10%, #122d37 0%, #08161c 100%);
+    background-attachment: fixed;
     color: var(--text-primary);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -39,20 +41,21 @@
   }
 }
 
-/* Solarized Card with Subtle Top-Light Gradient and Layered Shadows */
+/* Solarized Card with Subtle Top-Light Gradient and Layered Ambient Shadows */
 .solarized-card {
   background-color: var(--bg-card);
-  background-image: linear-gradient(180deg, rgba(238, 232, 213, 0.03) 0%, transparent 40%);
+  background-image: linear-gradient(180deg, rgba(238, 232, 213, 0.04) 0%, transparent 40%);
   border: 1px solid var(--border-color);
   border-top: 1px solid var(--border-top-highlight);
   border-radius: 14px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4), 0 2px 6px -1px rgba(0, 0, 0, 0.2);
   transition: transform 0.18s ease-out, box-shadow 0.18s ease-out, border-color 0.18s ease-out;
 }
 
 .solarized-card:hover {
-  border-color: rgba(147, 161, 161, 0.24);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45), 0 8px 20px rgba(0, 0, 0, 0.35);
+  border-color: rgba(147, 161, 161, 0.3);
+  box-shadow: 0 10px 28px -4px rgba(0, 0, 0, 0.55), 0 4px 10px -2px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
 }
 
 /* Section Header Typography */

@@ -1,14 +1,81 @@
 import { NoteColor, SheetData } from "../types";
 import { sanitizeHtml } from "./sanitizeHtml";
 
-// Note Background Color Mapper — visual Solarized Dark
-export function getNoteColorClasses(_color: NoteColor): { bg: string; border: string; hover: string; tagBg: string } {
-  return {
-    bg: "solarized-card",
-    border: "border-[rgba(147,161,161,0.12)]",
-    hover: "hover:border-[rgba(147,161,161,0.24)]",
-    tagBg: "bg-[#002b36] text-[#93a1a1]",
-  };
+// Note Background Color Mapper — Paleta acolhedora, equilibrada e confortável (tons areia, linho, musgo e ardósia)
+export function getNoteColorClasses(color: NoteColor): { bg: string; border: string; hover: string; tagBg: string } {
+  switch (color) {
+    case "yellow":
+      return {
+        bg: "bg-[#1c1a13] shadow-[0_4px_20px_rgba(0,0,0,0.35)]",
+        border: "border-[#b58900]/35 border-t-[#b58900]/60",
+        hover: "hover:border-[#b58900]/70 hover:shadow-[0_8px_25px_rgba(181,137,0,0.15)]",
+        tagBg: "bg-[#282417] text-[#e0b838]",
+      };
+    case "green":
+      return {
+        bg: "bg-[#121c17] shadow-[0_4px_20px_rgba(0,0,0,0.35)]",
+        border: "border-[#859900]/35 border-t-[#859900]/60",
+        hover: "hover:border-[#859900]/70 hover:shadow-[0_8px_25px_rgba(133,153,0,0.15)]",
+        tagBg: "bg-[#1c2921] text-[#a6c42a]",
+      };
+    case "teal":
+      return {
+        bg: "bg-[#0d1d20] shadow-[0_4px_20px_rgba(0,0,0,0.35)]",
+        border: "border-[#2aa198]/35 border-t-[#2aa198]/60",
+        hover: "hover:border-[#2aa198]/70 hover:shadow-[0_8px_25px_rgba(42,161,152,0.15)]",
+        tagBg: "bg-[#162c30] text-[#52d1c7]",
+      };
+    case "blue":
+      return {
+        bg: "bg-[#111c26] shadow-[0_4px_20px_rgba(0,0,0,0.35)]",
+        border: "border-[#268bd2]/35 border-t-[#268bd2]/60",
+        hover: "hover:border-[#268bd2]/70 hover:shadow-[0_8px_25px_rgba(38,139,210,0.15)]",
+        tagBg: "bg-[#1a2938] text-[#6cb5ec]",
+      };
+    case "purple":
+      return {
+        bg: "bg-[#181524] shadow-[0_4px_20px_rgba(0,0,0,0.35)]",
+        border: "border-[#6c71c4]/35 border-t-[#6c71c4]/60",
+        hover: "hover:border-[#6c71c4]/70 hover:shadow-[0_8px_25px_rgba(108,113,196,0.15)]",
+        tagBg: "bg-[#232036] text-[#a2a6e6]",
+      };
+    case "pink":
+      return {
+        bg: "bg-[#20141b] shadow-[0_4px_20px_rgba(0,0,0,0.35)]",
+        border: "border-[#d33682]/35 border-t-[#d33682]/60",
+        hover: "hover:border-[#d33682]/70 hover:shadow-[0_8px_25px_rgba(211,54,130,0.15)]",
+        tagBg: "bg-[#2e1d27] text-[#f06ba8]",
+      };
+    case "amber":
+      return {
+        bg: "bg-[#1f1510] shadow-[0_4px_20px_rgba(0,0,0,0.35)]",
+        border: "border-[#cb4b16]/35 border-t-[#cb4b16]/60",
+        hover: "hover:border-[#cb4b16]/70 hover:shadow-[0_8px_25px_rgba(203,75,22,0.15)]",
+        tagBg: "bg-[#2e2017] text-[#e87545]",
+      };
+    case "red":
+      return {
+        bg: "bg-[#201112] shadow-[0_4px_20px_rgba(0,0,0,0.35)]",
+        border: "border-[#dc322f]/35 border-t-[#dc322f]/60",
+        hover: "hover:border-[#dc322f]/70 hover:shadow-[0_8px_25px_rgba(220,50,47,0.15)]",
+        tagBg: "bg-[#2f1719] text-[#f26360]",
+      };
+    case "gray":
+      return {
+        bg: "bg-[#171e22] shadow-[0_4px_20px_rgba(0,0,0,0.35)]",
+        border: "border-[rgba(238,232,213,0.15)] border-t-[rgba(238,232,213,0.3)]",
+        hover: "hover:border-[rgba(238,232,213,0.35)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.4)]",
+        tagBg: "bg-[#222a30] text-[#c4d0d0]",
+      };
+    default:
+      // Tom Padrão Areia Suave / Warm Linen Neutral com elevação
+      return {
+        bg: "bg-[#0b242c] shadow-[0_4px_20px_rgba(0,0,0,0.35)]",
+        border: "border-[rgba(147,161,161,0.18)] border-t-[rgba(238,232,213,0.18)]",
+        hover: "hover:border-[rgba(147,161,161,0.35)] hover:shadow-[0_8px_25px_rgba(0,0,0,0.45)]",
+        tagBg: "bg-[#051a21] text-[#93a1a1]",
+      };
+  }
 }
 
 // Dot colorido discreto (estilo solarized / tons empoeirados elegantes)

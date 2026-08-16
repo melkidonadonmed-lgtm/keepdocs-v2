@@ -349,15 +349,110 @@ export const ImageAnnotatorModal: React.FC<ImageAnnotatorModalProps> = ({
     setCurrentPath([]);
   };
 
+  // Helper: Distância geométrica de um ponto (px, py) a um segmento de reta (x1, y1) - (x2, y2)
+  const distToSegment = (px: number, py: number, x1: number, y1: number, x2: number, y2: number) => {
+    const l2 = Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2);
+    if (l2 === 0) return Math.hypot(px - x1, py - y1);
+    let t = ((px - x1) * (x2 - x1) + (py - y1) * (y2 - y1)) / l2;
+    t = Math.max(0, Math.min(1, t));
+    return Math.hypot(px - (x1 + t * (x2 - x1)), py - (y1 + t * (y2 - y1)));
+  };
+
   const eraseLayerAt = (x: number, y: number) => {
-    const threshold = 18;
+    const baseRadius = Math.max(strokeWidth * 4, 24);
     const remaining = layers.filter((layer) => {
-      if (layer.points) {
-        return !layer.points.some((p) => Math.hypot(p.x - x, p.y - y) < threshold);
+      // 1. Caneta e Marca-texto (percorre segmentos de linhas do traço)
+      if (layer.points && layer.points.length > 0) {
+        if (layer.points.length === 1) {
+          return Math.hypot(layer.points[0].x - x, layer.points[0].y - y) >= baseRadius;
+        }
+        for (let i = 0; i < layer.points.length - 1; i++) {
+          const d = distToSegment(
+            x,
+            y,
+            layer.points[i].x,
+            layer.points[i].y,
+            layer.points[i + 1].x,
+            layer.points[i + 1].y
+          );
+          if (d < baseRadius + (layer.width || 3) / 2) {
+            return false; // Apaga o traço
+          }
+        }
+        return true;
       }
-      if (layer.x !== undefined && layer.y !== undefined) {
-        return Math.hypot(layer.x - x, layer.y - y) >= threshold;
+
+      // 2. Retângulos (verifica bordas e clique interno)
+      if (
+        layer.type === "rect" &&
+        layer.x !== undefined &&
+        layer.y !== undefined &&
+        layer.x2 !== undefined &&
+        layer.y2 !== undefined
+      ) {
+        const xMin = Math.min(layer.x, layer.x2);
+        const xMax = Math.max(layer.x, layer.x2);
+        const yMin = Math.min(layer.y, layer.y2);
+        const yMax = Math.max(layer.y, layer.y2);
+
+        const d1 = distToSegment(x, y, xMin, yMin, xMax, yMin);
+        const d2 = distToSegment(x, y, xMax, yMin, xMax, yMax);
+        const d3 = distToSegment(x, y, xMax, yMax, xMin, yMax);
+        const d4 = distToSegment(x, y, xMin, yMax, xMin, yMin);
+        const minBorderDist = Math.min(d1, d2, d3, d4);
+
+        if (minBorderDist < baseRadius || (x >= xMin && x <= xMax && y >= yMin && y <= yMax)) {
+          return false;
+        }
+        return true;
       }
+
+      // 3. Círculos (verifica raio e área interna)
+      if (
+        layer.type === "circle" &&
+        layer.x !== undefined &&
+        layer.y !== undefined &&
+        layer.x2 !== undefined &&
+        layer.y2 !== undefined
+      ) {
+        const radius = Math.hypot(layer.x2 - layer.x, layer.y2 - layer.y);
+        const distFromCenter = Math.hypot(x - layer.x, y - layer.y);
+        if (Math.abs(distFromCenter - radius) < baseRadius || distFromCenter <= radius) {
+          return false;
+        }
+        return true;
+      }
+
+      // 4. Setas indicativas
+      if (
+        layer.type === "arrow" &&
+        layer.x !== undefined &&
+        layer.y !== undefined &&
+        layer.x2 !== undefined &&
+        layer.y2 !== undefined
+      ) {
+        const d = distToSegment(x, y, layer.x, layer.y, layer.x2, layer.y2);
+        if (d < baseRadius + (layer.width || 3)) {
+          return false;
+        }
+        return true;
+      }
+
+      // 5. Textos anotados
+      if (layer.type === "text" && layer.x !== undefined && layer.y !== undefined) {
+        const fontSize = Math.max((layer.width || 3) * 5, 14);
+        const approxWidth = (layer.text?.length || 5) * (fontSize * 0.6);
+        if (
+          x >= layer.x - baseRadius &&
+          x <= layer.x + approxWidth + baseRadius &&
+          y >= layer.y - fontSize - baseRadius &&
+          y <= layer.y + baseRadius
+        ) {
+          return false;
+        }
+        return true;
+      }
+
       return true;
     });
 
@@ -757,7 +852,9 @@ export const ImageAnnotatorModal: React.FC<ImageAnnotatorModalProps> = ({
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             onPointerCancel={handlePointerUp}
-            className="w-full max-w-[840px] aspect-[840/520] rounded-xl border border-[rgba(147,161,161,0.2)] bg-[#002b36] shadow-2xl cursor-crosshair touch-none"
+            className={`w-full max-w-[840px] aspect-[840/520] rounded-xl border border-[rgba(147,161,161,0.2)] bg-[#002b36] shadow-2xl touch-none ${
+              selectedTool === "eraser" ? "cursor-cell" : "cursor-crosshair"
+            }`}
             style={{ touchAction: "none" }}
           />
 

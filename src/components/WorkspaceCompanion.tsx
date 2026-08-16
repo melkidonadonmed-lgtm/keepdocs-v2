@@ -191,10 +191,45 @@ export const WorkspaceCompanion: React.FC<WorkspaceCompanionProps> = ({
         fetchDrive(res.accessToken);
       }
     } catch (err: any) {
-      setAuthError(err.message || "Falha na autenticação do Google Workspace.");
+      if (err?.code === "auth/unauthorized-domain" || err?.message?.includes("unauthorized-domain")) {
+        setAuthError(
+          "Domínio 'localhost' não autorizado no Firebase Auth. Adicione 'localhost' e '127.0.0.1' no Firebase Console (Authentication > Settings > Authorized Domains). Você também pode ativar o Modo Simulado abaixo para testar as importações."
+        );
+      } else {
+        setAuthError(err?.message || "Falha na autenticação do Google Workspace.");
+      }
     } finally {
       setIsAuthenticating(false);
     }
+  };
+
+  const handleLoadDemoDrive = () => {
+    const demoFiles: GoogleDriveItem[] = [
+      {
+        id: "demo_doc_1",
+        name: "Proposta Comercial & Arquitetura - KeepDocs.gdoc",
+        mimeType: "application/vnd.google-apps.document",
+        modifiedTime: new Date().toISOString(),
+        webViewLink: "https://docs.google.com/document/d/demo",
+      },
+      {
+        id: "demo_sheet_1",
+        name: "Planejamento Financeiro Q3 - Mini-Sheet.gsheet",
+        mimeType: "application/vnd.google-apps.spreadsheet",
+        modifiedTime: new Date().toISOString(),
+        webViewLink: "https://docs.google.com/spreadsheets/d/demo",
+      },
+      {
+        id: "demo_slide_1",
+        name: "Apresentação Pitch Executivo.gslides",
+        mimeType: "application/vnd.google-apps.presentation",
+        modifiedTime: new Date().toISOString(),
+        webViewLink: "https://docs.google.com/presentation/d/demo",
+      },
+    ];
+    setDriveFiles(demoFiles);
+    setAccessTokenState("demo_token");
+    setAuthError(null);
   };
 
   const handleSignOut = async () => {
@@ -734,22 +769,39 @@ Conteúdo atual (resumo): ${activeNote.content.replace(/<[^>]+>/g, " ").slice(0,
                         </button>
                       </>
                     ) : (
-                      <button
-                        onClick={handleSignIn}
-                        disabled={isAuthenticating}
-                        className="rounded-lg bg-[#2aa198] px-2.5 py-1 text-[11px] font-bold text-[#002b36] hover:brightness-105"
-                      >
-                        {isAuthenticating ? "Conectando..." : "Conectar"}
-                      </button>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={handleLoadDemoDrive}
+                          className="rounded-lg border border-[rgba(147,161,161,0.2)] bg-[#073642] px-2 py-1 text-[10px] text-[#2aa198] hover:bg-[#0a4553] transition-colors"
+                          title="Carregar arquivos de demonstração locais"
+                        >
+                          Modo Demo
+                        </button>
+                        <button
+                          onClick={handleSignIn}
+                          disabled={isAuthenticating}
+                          className="rounded-lg bg-[#2aa198] px-2.5 py-1 text-[11px] font-bold text-[#002b36] hover:brightness-105"
+                        >
+                          {isAuthenticating ? "Conectando..." : "Conectar"}
+                        </button>
+                      </div>
                     )}
                   </div>
                 </div>
 
                 {/* Global Error Banner */}
                 {authError && (
-                  <div className="flex items-center gap-1.5 rounded-lg bg-[#dc322f]/15 border border-[#dc322f]/30 p-2 text-[11px] text-[#dc322f]">
-                    <AlertCircle className="h-3.5 w-3.5 shrink-0" />
-                    <span className="truncate">{authError}</span>
+                  <div className="flex flex-col gap-2 rounded-xl bg-[#dc322f]/10 border border-[#dc322f]/30 p-2.5 text-xs text-[#f26360]">
+                    <div className="flex items-start gap-2">
+                      <AlertCircle className="h-4 w-4 shrink-0 text-[#dc322f] mt-0.5" />
+                      <p className="leading-relaxed text-[11px]">{authError}</p>
+                    </div>
+                    <button
+                      onClick={handleLoadDemoDrive}
+                      className="self-start rounded-lg bg-[#dc322f]/20 px-2.5 py-1 text-[10px] font-semibold text-[#eee8d5] hover:bg-[#dc322f]/30 transition-colors"
+                    >
+                      👉 Ativar Modo Demo / Arquivos Locais
+                    </button>
                   </div>
                 )}
 
