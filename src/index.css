@@ -1,0 +1,153 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-page: #002b36;
+    --bg-card: #073642;
+    --bg-overlay: #0a4553;
+    --bg-sidebar: #01303c;
+    
+    --text-primary: #eee8d5;
+    --text-secondary: #93a1a1;
+    --text-muted: #586e75;
+    
+    --border-color: rgba(147, 161, 161, 0.12);
+    --border-top-highlight: rgba(238, 232, 213, 0.08);
+    
+    --accent-teal: #2aa198;
+    --accent-yellow: #b58900;
+    
+    --dot-yellow: #b58900;
+    --dot-green: #859900;
+    --dot-teal: #2aa198;
+    --dot-cyan: #268bd2;
+    --dot-violet: #6c71c4;
+    --dot-magenta: #d33682;
+    --dot-orange: #cb4b16;
+    --dot-red: #dc322f;
+    --dot-gray: #93a1a1;
+  }
+
+  body {
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    selection-background-color: rgba(42, 161, 152, 0.3);
+  }
+}
+
+/* Solarized Card with Subtle Top-Light Gradient and Layered Shadows */
+.solarized-card {
+  background-color: var(--bg-card);
+  background-image: linear-gradient(180deg, rgba(238, 232, 213, 0.03) 0%, transparent 40%);
+  border: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-top-highlight);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: transform 0.18s ease-out, box-shadow 0.18s ease-out, border-color 0.18s ease-out;
+}
+
+.solarized-card:hover {
+  border-color: rgba(147, 161, 161, 0.24);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45), 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* Section Header Typography */
+.section-label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+}
+
+/* Card Title Typography */
+.card-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--text-primary);
+}
+
+/* Ghost Button System */
+.btn-ghost {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-ghost:hover {
+  background-color: rgba(10, 69, 83, 0.6);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+/* Accordion Grid Transition (Zero Layout Shift) */
+.accordion-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 220ms cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms ease-out;
+}
+
+.accordion-wrapper.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.accordion-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Solarized Dusty Dot Classes */
+.dot-yellow { background-color: var(--dot-yellow); }
+.dot-green { background-color: var(--dot-green); }
+.dot-teal { background-color: var(--dot-teal); }
+.dot-blue { background-color: var(--dot-cyan); }
+.dot-purple { background-color: var(--dot-violet); }
+.dot-pink { background-color: var(--dot-magenta); }
+.dot-amber { background-color: var(--dot-orange); }
+.dot-red { background-color: var(--dot-red); }
+.dot-gray { background-color: var(--dot-gray); }
+
+/* Ultra-Refined Transparent Scrollbars (6px) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 9999px;
+  transition: background 0.2s ease;
+}
+
+*:hover::-webkit-scrollbar-thumb {
+  background: rgba(147, 161, 161, 0.25);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(147, 161, 161, 0.5) !important;
+}
+
+/* Ambient Subtle Pin Glow */
+.pin-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  background: radial-gradient(circle, rgba(181, 137, 0, 0.25) 0%, rgba(181, 137, 0, 0.08) 55%, transparent 75%);
+  pointer-events: none;
+  border-radius: 9999px;
+}

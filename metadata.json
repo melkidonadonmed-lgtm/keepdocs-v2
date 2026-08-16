@@ -1,0 +1,8 @@
+{
+  "name": "Remix KeepDocs Workspace",
+  "description": "Hybrid workspace combining Google Keep card grid with Google Docs rich editor, smart auto-fill templates, mini spreadsheets, canvas image annotation, and Google Drive integration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
