@@ -52,8 +52,8 @@ export default function App() {
     };
   }, []);
 
-  // Global Sync timestamp
-  const [driveSyncedAt, setDriveSyncedAt] = useState<string | null>(() => {
+  // Global Sync timestamp (read-only: última data conhecida, exibida no Header/DrivePicker)
+  const [driveSyncedAt] = useState<string | null>(() => {
     return localStorage.getItem("keepdocs_drive_synced_at");
   });
 
@@ -330,28 +330,6 @@ export default function App() {
       }
       return [updatedNote, ...prev];
     });
-  };
-
-  // Google Drive Sync API call (ainda não implementado no backend — responde 501)
-  const handleSyncDrive = async () => {
-    try {
-      const res = await fetch("/api/drive/sync", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ notesCount: notes.length, lastSync: driveSyncedAt }),
-      });
-      if (!res.ok) {
-        console.warn(`Drive sync indisponível (HTTP ${res.status}): recurso ainda não implementado.`);
-        return;
-      }
-      const data = await res.json();
-      if (data.syncedAt) {
-        setDriveSyncedAt(data.syncedAt);
-        localStorage.setItem("keepdocs_drive_synced_at", data.syncedAt);
-      }
-    } catch (err) {
-      console.error("Erro na sincronização Drive:", err);
-    }
   };
 
   // Global workspace backup (export / import all notes as a single .json)
